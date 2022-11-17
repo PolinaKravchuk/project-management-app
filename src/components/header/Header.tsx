@@ -1,12 +1,19 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import './Header.css';
+import globalStore from 'redux/store';
+
 import Constants from 'utils/Constants';
+import GlobalState from 'types/GlobalState';
+import { changeLang } from 'redux/appSlice';
 
 function Header() {
-  const [isENLanguage, setIsENLanguage] = useState(true);
+  const isENLanguage = useSelector((state: GlobalState) => state.isENLanguage);
+  const [t, i18n] = useTranslation('common');
   useEffect(() => {
     const headerComponent = document.getElementById('header');
 
@@ -25,7 +32,8 @@ function Header() {
   }, []);
 
   function handleChange() {
-    setIsENLanguage(!isENLanguage);
+    globalStore.dispatch(changeLang({ lang: !isENLanguage }));
+    i18n.changeLanguage(!isENLanguage ? Constants.LANGUAGE.EN : Constants.LANGUAGE.RU);
   }
 
   return (
@@ -35,10 +43,10 @@ function Header() {
       </Link>
       <nav className="header-nav">
         <Link className="header-link light-txt-brand" to="/login">
-          Sign In
+          {t('header.signIn')}
         </Link>
         <Link className="header-link light-txt-brand" to="/registration">
-          Sign Out
+          {t('header.signUp')}
         </Link>
         <FormControlLabel
           control={<Switch defaultChecked onChange={handleChange} />}
