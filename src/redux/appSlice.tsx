@@ -35,6 +35,11 @@ const appSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem('token', action.payload.token);
     },
+    logoutUser: (state) => {
+      state.isLogged = false;
+      state.token = '';
+      localStorage.setItem('token', '');
+    },
     changeLang: (state, action) => {
       state.isENLanguage = action.payload.lang;
     },
@@ -48,6 +53,7 @@ export const {
   registerErrorMessage,
   registerSuccessMessage,
   loginUser,
+  logoutUser,
   changeLang,
 } = appSlice.actions;
 export default appSlice;

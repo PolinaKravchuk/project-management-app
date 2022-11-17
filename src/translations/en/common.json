@@ -1,7 +1,11 @@
 {
   "header": {
     "signIn": "Sign In",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "main": "Go To Main Page",
+    "editProfile": "Edit profile",
+    "signOut": "Sign Out",
+    "newBoard": "Create new board"
   },
   "form": {
     "name": "Name",

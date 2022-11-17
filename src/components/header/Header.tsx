@@ -6,17 +6,20 @@ import { useTranslation } from 'react-i18next';
 
 import './Header.css';
 import globalStore from 'redux/store';
-
-import Constants from 'utils/Constants';
-import GlobalState from 'types/GlobalState';
 import { changeLang } from 'redux/appSlice';
 
-function Header() {
+import GlobalState from 'types/GlobalState';
+import HeaderType from 'types/HeaderType';
+import Constants from 'utils/Constants';
+
+function Header(props: HeaderType) {
+  const isLogged = useSelector((state: GlobalState) => state.isLogged);
   const isENLanguage = useSelector((state: GlobalState) => state.isENLanguage);
+
   const [t, i18n] = useTranslation('common');
+
   useEffect(() => {
     const headerComponent = document.getElementById('header');
-
     function handleScrollPage() {
       const scroll = window.pageYOffset;
       if (scroll > Constants.HEADER_HEIGHT) {
@@ -42,12 +45,33 @@ function Header() {
         <img className="header-logo" alt="logo" />
       </Link>
       <nav className="header-nav">
-        <Link className="header-link light-txt-brand" to="/login">
-          {t('header.signIn')}
-        </Link>
-        <Link className="header-link light-txt-brand" to="/registration">
-          {t('header.signUp')}
-        </Link>
+        {isLogged ? (
+          <Link className="header-link light-txt-brand" to="/main">
+            {t('header.main')}
+          </Link>
+        ) : (
+          <>
+            <Link className="header-link light-txt-brand" to="/login">
+              {t('header.signIn')}
+            </Link>
+            <Link className="header-link light-txt-brand" to="/registration">
+              {t('header.signUp')}
+            </Link>{' '}
+          </>
+        )}
+        {props.type === Constants.PAGE.MAIN && (
+          <>
+            <Link className="header-link light-txt-brand" to="/edit">
+              {t('header.editProfile')}
+            </Link>
+            <Link className="header-link light-txt-brand" to="/signOut">
+              {t('header.signOut')}
+            </Link>
+            <Link className="header-link light-txt-brand" to="/newBoard">
+              {t('header.newBoard')}
+            </Link>
+          </>
+        )}
         <FormControlLabel
           control={<Switch defaultChecked onChange={handleChange} />}
           label={isENLanguage ? Constants.LANGUAGE.EN : Constants.LANGUAGE.RU}
