@@ -5,6 +5,7 @@ const Constants = {
     SIGN_IN: 'auth/signin',
   },
   PAGE: {
+    WELCOME: 'welcome',
     MAIN: 'main',
   },
   HEADER_HEIGHT: 200,

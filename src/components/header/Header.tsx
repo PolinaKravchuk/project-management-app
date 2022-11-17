@@ -28,9 +28,13 @@ function Header(props: HeaderType) {
         headerComponent?.classList.remove('shrink');
       }
     }
-    window.addEventListener('scroll', handleScrollPage);
+    if (props.type !== Constants.PAGE.WELCOME) {
+      window.addEventListener('scroll', handleScrollPage);
+    }
     return () => {
-      window.removeEventListener('scroll', handleScrollPage);
+      if (props.type !== Constants.PAGE.WELCOME) {
+        window.removeEventListener('scroll', handleScrollPage);
+      }
     };
   }, []);
 
@@ -45,11 +49,7 @@ function Header(props: HeaderType) {
         <img className="header-logo" alt="logo" />
       </Link>
       <nav className="header-nav">
-        {isLogged ? (
-          <Link className="header-link light-txt-brand" to="/main">
-            {t('header.main')}
-          </Link>
-        ) : (
+        {!isLogged && (
           <>
             <Link className="header-link light-txt-brand" to="/login">
               {t('header.signIn')}
@@ -59,7 +59,12 @@ function Header(props: HeaderType) {
             </Link>{' '}
           </>
         )}
-        {props.type === Constants.PAGE.MAIN && (
+        {isLogged && props.type !== Constants.PAGE.MAIN && (
+          <Link className="header-link light-txt-brand" to="/main">
+            {t('header.main')}
+          </Link>
+        )}
+        {isLogged && props.type === Constants.PAGE.MAIN && (
           <>
             <Link className="header-link light-txt-brand" to="/edit">
               {t('header.editProfile')}
@@ -77,7 +82,7 @@ function Header(props: HeaderType) {
           </>
         )}
         <FormControlLabel
-          control={<Switch defaultChecked onChange={handleChange} />}
+          control={<Switch checked={isENLanguage} onChange={handleChange} />}
           label={isENLanguage ? Constants.LANGUAGE.EN : Constants.LANGUAGE.RU}
         />
       </nav>

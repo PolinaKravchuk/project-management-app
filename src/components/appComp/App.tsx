@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import './App.css';
@@ -15,6 +15,8 @@ import Login from 'components/form/login/Login';
 import Registration from 'components/form/registration/Registration';
 
 import GlobalState from 'types/GlobalState';
+import Constants from 'utils/Constants';
+import PrivateRoute from 'components/privateRoute/PrivateRoute';
 
 function App() {
   const token = useSelector((state: GlobalState) => state.token);
@@ -37,9 +39,14 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Header />} />
+        <Route path="/" element={<Header type={Constants.PAGE.WELCOME} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route
+          path="/main"
+          element={<PrivateRoute element={<Header type={Constants.PAGE.MAIN} />}></PrivateRoute>}
+        />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       {toastMessage && <Toast />}
     </div>
