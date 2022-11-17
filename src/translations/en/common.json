@@ -1,0 +1,22 @@
+{
+  "header": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "form": {
+    "name": "Name",
+    "login": "Login",
+    "password": "Password",
+    "successMsg": {
+      "accountCreated": "Account was created successfully"
+    },
+    "errorMsg": {
+      "required": "Field is mandatory",
+      "minLength": "Field should has more then 3 characters",
+      "maxNameLength": "Field should has less then 20 characters",
+      "maxLoginPassLength": "Field should has less then 15 characters"
+    },
+    "submit": "Submit",
+    "cancel": "Cancel"
+  }
+}
