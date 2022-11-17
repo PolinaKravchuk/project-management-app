@@ -1,4 +1,5 @@
 const Constants = {
+  APP_URL: 'https://project-management-app-be-production.up.railway.app/',
   HEADER_HEIGHT: 200,
 
   FORM_TYPE: {
@@ -7,8 +8,8 @@ const Constants = {
   },
 
   LANGUAGE: {
-    RU: 'RU',
-    EN: 'EN',
+    RU: 'ru',
+    EN: 'en',
   },
 };
 export default Constants;
