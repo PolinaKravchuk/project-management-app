@@ -26,7 +26,12 @@ function Registration() {
       .post(Constants.APP_URL + Constants.AUTH_API.SIGN_UP, formData)
       .then(() => login(formData))
       .then(() => {
-        store.dispatch(registerSuccessMessage({ message: t('form.successMsg.accountCreated') }));
+        store.dispatch(
+          registerSuccessMessage({
+            message: t('form.successMsg.accountCreated'),
+            label: t('toast.successLabel'),
+          })
+        );
         setTimeout(function () {
           store.dispatch(registerSuccessMessage({ message: '' }));
         }, 3000);

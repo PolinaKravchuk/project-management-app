@@ -7,6 +7,10 @@
     "signOut": "Выйти",
     "newBoard": "Создать новый борд"
   },
+  "toast": {
+    "errorLabel": "Ошибка",
+    "successLabel": "Успех"
+  },
   "form": {
     "name": "Имя",
     "login": "Логин",

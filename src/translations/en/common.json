@@ -7,6 +7,10 @@
     "signOut": "Sign Out",
     "newBoard": "Create new board"
   },
+  "toast": {
+    "errorLabel": "Error",
+    "successLabel": "Success"
+  },
   "form": {
     "name": "Name",
     "login": "Login",
