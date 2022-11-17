@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import './Header.css';
-import globalStore from 'redux/store';
-import { changeLang } from 'redux/appSlice';
+import globalStore, { store } from 'redux/store';
+import { changeLang, logoutUser } from 'redux/appSlice';
 
 import GlobalState from 'types/GlobalState';
 import HeaderType from 'types/HeaderType';
@@ -64,7 +64,11 @@ function Header(props: HeaderType) {
             <Link className="header-link light-txt-brand" to="/edit">
               {t('header.editProfile')}
             </Link>
-            <Link className="header-link light-txt-brand" to="/signOut">
+            <Link
+              className="header-link light-txt-brand"
+              to="/"
+              onClick={() => store.dispatch(logoutUser())}
+            >
               {t('header.signOut')}
             </Link>
             <Link className="header-link light-txt-brand" to="/newBoard">
