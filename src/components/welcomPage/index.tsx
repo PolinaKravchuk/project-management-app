@@ -1,9 +1,9 @@
 import React from 'react';
 import './WelcomPage.css';
 import { Link } from 'react-router-dom';
-import emblem from '../../assets/img/emblem.png';
-import { data } from './aboutTeamData';
-import rsSchool from '../../assets/img/rsSchool.png';
+import emblem from 'assets/img/emblem.png';
+import { developers } from './aboutTeamData';
+import rsSchool from 'assets/img/rsSchool.png';
 import Footer from 'components/Footer';
 import { Developer } from './types';
 
@@ -48,7 +48,7 @@ export default function WelcomePage() {
             <h2 className="section-title">About team</h2>
             <div className="about-team__list-container">
               <ul className="about-team__list">
-                {data.map((developer: Developer) => (
+                {developers.map((developer: Developer) => (
                   <li key={developer.name} className="about-team__item">
                     <img className="about-team__avatar" src={developer.img} alt="avatar" />
                     <h3 className="about-team__name">

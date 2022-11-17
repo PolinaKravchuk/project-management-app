@@ -1,6 +1,6 @@
-import gitHubIcon from '../../assets/img/gitHubIcon.png';
+import gitHubIcon from 'assets/img/gitHubIcon.png';
 import { FooterDeveloper } from './types';
-export const data: FooterDeveloper[] = [
+export const developers: FooterDeveloper[] = [
   {
     name: 'polinakravchuk',
     img: gitHubIcon,

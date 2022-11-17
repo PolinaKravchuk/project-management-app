@@ -1,12 +1,12 @@
-import avatar from '../../assets/img/avatar.png';
+import avatar from 'assets/img/avatar.png';
 import { Developer } from './types';
 
-export const data: Developer[] = [
+export const developers: Developer[] = [
   {
     name: 'polinakravchuk',
     img: avatar,
     link: 'https://github.com/polinakravchuk',
-    text: 'Frontend developer',
+    text: 'Team Lead',
   },
   {
     name: 'niknikolay',

@@ -12,7 +12,7 @@
   align-items: center;
 }
 
-.footer-wrapper {
+.footer-link-container {
   display: flex;
   width: 100%;
   justify-content: space-between;
