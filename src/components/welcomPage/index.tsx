@@ -6,27 +6,14 @@ import { developers } from './aboutTeamData';
 import rsSchool from 'assets/img/rsSchool.png';
 import Footer from 'components/Footer';
 import { Developer } from './types';
+import Header from 'components/header/Header';
+import Constants from 'utils/Constants';
 
 export default function WelcomePage() {
   const isAuth = false;
   return (
     <>
-      <header className="header-welcome-page">
-        {isAuth ? (
-          <Link className="header-welcome-page__link_active" to="/main">
-            Main page
-          </Link>
-        ) : (
-          <>
-            <Link className="header-welcome-page__link_active" to="/signIn">
-              Sign In
-            </Link>
-            <Link className="header-welcome-page__link" to="/signUp">
-              Sign Up
-            </Link>
-          </>
-        )}
-      </header>
+      <Header type={Constants.PAGE.WELCOME} />
       <main className="main">
         <section className="about-app">
           <div className="about-app-container">

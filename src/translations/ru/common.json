@@ -1,0 +1,30 @@
+{
+  "header": {
+    "signIn": "Логин",
+    "signUp": "Регистрация",
+    "main": "Главная",
+    "editProfile": "Редактировать профиль",
+    "signOut": "Выйти",
+    "newBoard": "Создать новый борд"
+  },
+  "toast": {
+    "errorLabel": "Ошибка",
+    "successLabel": "Успех"
+  },
+  "form": {
+    "name": "Имя",
+    "login": "Логин",
+    "password": "Пароль",
+    "successMsg": {
+      "accountCreated": "Аккаунт был успешно создан"
+    },
+    "errorMsg": {
+      "required": "Обязательное поле",
+      "minLength": "Поле должно иметь более 3 символов",
+      "maxNameLength": "Поле должно иметь менее 20 символов",
+      "maxLoginPassLength": "Поле должно иметь менее 15 символов"
+    },
+    "submit": "Отправить",
+    "cancel": "Отмена"
+  }
+}
