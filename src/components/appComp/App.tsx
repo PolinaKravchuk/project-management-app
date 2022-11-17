@@ -17,6 +17,7 @@ import Registration from 'components/form/registration/Registration';
 import GlobalState from 'types/GlobalState';
 import Constants from 'utils/Constants';
 import PrivateRoute from 'components/privateRoute/PrivateRoute';
+import WelcomePage from 'components/welcomPage';
 
 function App() {
   const token = useSelector((state: GlobalState) => state.token);
@@ -39,7 +40,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Header type={Constants.PAGE.WELCOME} />} />
+        <Route path="/" element={<Navigate to="/welcome" />} />
+        <Route path="welcome" element={<WelcomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route

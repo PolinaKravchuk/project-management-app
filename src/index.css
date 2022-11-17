@@ -8,6 +8,16 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+* {
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+ul {
+  padding: 0;
+}
+
 a:link {
   text-decoration: none;
 }
@@ -32,3 +42,4 @@ a:active {
 .dark-txt-brand {
   color: #395144;
 }
+
