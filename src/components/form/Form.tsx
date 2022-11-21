@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button, CircularProgress, TextField } from '@mui/material';
 
+import login from 'assets/img/login.png';
 import './Form.css';
 import Toast from 'components/toast/Toast';
 import Constants from 'utils/Constants';
@@ -48,16 +49,48 @@ function Form(props: FormProps) {
         ) : (
           <h2>{t('header.signIn')}</h2>
         )}
-        <form className="form" onSubmit={handleSubmit(onSubmitForm)}>
-          {props.type === Constants.FORM_TYPE.REGISTRATION && (
+        <div className="form-content-container">
+          <img className="form-image" src={login} />
+          <form className="form" onSubmit={handleSubmit(onSubmitForm)}>
+            {props.type === Constants.FORM_TYPE.REGISTRATION && (
+              <div>
+                <TextField
+                  id="outlined-name"
+                  variant="standard"
+                  className="form-input"
+                  label={t('form.name')}
+                  type="text"
+                  {...register('name', {
+                    required: {
+                      value: true,
+                      message: t('form.errorMsg.required'),
+                    },
+                    minLength: {
+                      value: 3,
+                      message: t('form.errorMsg.minLength'),
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: t('form.errorMsg.maxNameLength'),
+                    },
+                  })}
+                />
+                <br />
+                <span className="input-error-msg">
+                  <ErrorMessage errors={errors} name="name" />
+                </span>
+              </div>
+            )}
+            <br />
+
             <div>
               <TextField
-                id="outlined-name"
+                id="outlined-login"
                 variant="standard"
                 className="form-input"
-                label={t('form.name')}
+                label={t('form.login')}
                 type="text"
-                {...register('name', {
+                {...register('login', {
                   required: {
                     value: true,
                     message: t('form.errorMsg.required'),
@@ -67,85 +100,56 @@ function Form(props: FormProps) {
                     message: t('form.errorMsg.minLength'),
                   },
                   maxLength: {
-                    value: 20,
-                    message: t('form.errorMsg.maxNameLength'),
+                    value: 15,
+                    message: t('form.errorMsg.maxLoginPassLength'),
                   },
                 })}
               />
               <br />
               <span className="input-error-msg">
-                <ErrorMessage errors={errors} name="name" />
+                <ErrorMessage errors={errors} name="login" />
               </span>
             </div>
-          )}
-          <br />
 
-          <div>
-            <TextField
-              id="outlined-login"
-              variant="standard"
-              className="form-input"
-              label={t('form.login')}
-              type="text"
-              {...register('login', {
-                required: {
-                  value: true,
-                  message: t('form.errorMsg.required'),
-                },
-                minLength: {
-                  value: 3,
-                  message: t('form.errorMsg.minLength'),
-                },
-                maxLength: {
-                  value: 15,
-                  message: t('form.errorMsg.maxLoginPassLength'),
-                },
-              })}
-            />
             <br />
-            <span className="input-error-msg">
-              <ErrorMessage errors={errors} name="login" />
-            </span>
-          </div>
-
-          <br />
-          <div>
-            <TextField
-              id="outlined-password"
-              variant="standard"
-              className="form-input"
-              label={t('form.password')}
-              type="password"
-              {...register('password', {
-                required: {
-                  value: true,
-                  message: t('form.errorMsg.required'),
-                },
-                minLength: {
-                  value: 3,
-                  message: t('form.errorMsg.minLength'),
-                },
-                maxLength: {
-                  value: 15,
-                  message: t('form.errorMsg.maxLoginPassLength'),
-                },
-              })}
-            />
+            <div>
+              <TextField
+                id="outlined-password"
+                variant="standard"
+                className="form-input"
+                label={t('form.password')}
+                type="password"
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: t('form.errorMsg.required'),
+                  },
+                  minLength: {
+                    value: 3,
+                    message: t('form.errorMsg.minLength'),
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: t('form.errorMsg.maxLoginPassLength'),
+                  },
+                })}
+              />
+              <br />
+              <span className="input-error-msg">
+                <ErrorMessage errors={errors} name="password" />
+              </span>
+            </div>
             <br />
-            <span className="input-error-msg">
-              <ErrorMessage errors={errors} name="password" />
-            </span>
-          </div>
-          <br />
-          <div className="form-buttons">
-            <Button className="form-button light-txt-brand" type="submit" variant="outlined">
-              {t('form.submit')}
-            </Button>
-            <Button variant="outlined" onClick={handleCancel}>
-              {t('form.cancel')}
-            </Button>
-          </div>
-        </form>
+            <div className="form-buttons">
+              <Button className="form-button light-txt-brand" type="submit" variant="outlined">
+                {t('form.submit')}
+              </Button>
+              <Button variant="outlined" onClick={handleCancel}>
+                {t('form.cancel')}
+              </Button>
+            </div>
+          </form>
+        </div>
         {toastMessage && <Toast />}
       </main>
     </>

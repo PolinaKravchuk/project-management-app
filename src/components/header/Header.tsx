@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { changeLang, logoutUser } from 'redux/authSlice';
 
+import logo from 'assets/img/small-logo.png';
 import HeaderType from 'types/HeaderType';
 import Constants from 'utils/Constants';
 import './Header.css';
@@ -14,6 +15,10 @@ function Header(props: HeaderType) {
   const isLogged = useAppSelector((state) => state.app.isLogged);
   const isENLanguage = useAppSelector((state) => state.app.isENLanguage);
   const dispatch = useAppDispatch();
+
+  let className = 'header dark-bg-brand';
+  className = props.type === Constants.PAGE.MAIN ? className + ' fixed' : className;
+
   const [t, i18n] = useTranslation('common');
 
   useEffect(() => {
@@ -42,9 +47,9 @@ function Header(props: HeaderType) {
   }
 
   return (
-    <header id="header" className="header dark-bg-brand">
-      <Link to="/">
-        <img className="header-logo" alt="logo" />
+    <header id="header" className={className}>
+      <Link className="header-logo-link" to="/">
+        <img className="header-logo" src={logo} alt="logo" />
       </Link>
       <nav className="header-nav">
         {!isLogged && (
