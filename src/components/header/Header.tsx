@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import './Header.css';
+import logo from 'assets/img/small-logo.png';
 import globalStore, { store } from 'redux/store';
 import { changeLang, logoutUser } from 'redux/appSlice';
 
@@ -15,7 +16,8 @@ import Constants from 'utils/Constants';
 function Header(props: HeaderType) {
   const isLogged = useSelector((state: GlobalState) => state.isLogged);
   const isENLanguage = useSelector((state: GlobalState) => state.isENLanguage);
-
+  let className = 'header dark-bg-brand';
+  className = props.type === Constants.PAGE.MAIN ? className + ' fixed' : className;
   const [t, i18n] = useTranslation('common');
 
   useEffect(() => {
@@ -44,9 +46,9 @@ function Header(props: HeaderType) {
   }
 
   return (
-    <header id="header" className="header dark-bg-brand">
-      <Link to="/">
-        <img className="header-logo" alt="logo" />
+    <header id="header" className={className}>
+      <Link className="header-logo-link" to="/">
+        <img className="header-logo" src={logo} alt="logo" />
       </Link>
       <nav className="header-nav">
         {!isLogged && (
