@@ -12,7 +12,7 @@ const initialState: GlobalState = {
   toastColor: 'info',
   toastMessage: '',
 };
-const appSlice = createSlice({
+const authSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
@@ -32,7 +32,7 @@ const appSlice = createSlice({
       state.toastColor = Constants.TOAST_TYPE.SUCCESS as AlertColor;
       state.toastMessage = action.payload.message;
     },
-    loginUser: (state, action) => {
+    authUser: (state, action) => {
       state.isLogged = true;
       state.token = action.payload.token;
       localStorage.setItem('token', action.payload.token);
@@ -54,8 +54,8 @@ export const {
   receiveData,
   registerErrorMessage,
   registerSuccessMessage,
-  loginUser,
+  authUser,
   logoutUser,
   changeLang,
-} = appSlice.actions;
-export default appSlice;
+} = authSlice.actions;
+export default authSlice;

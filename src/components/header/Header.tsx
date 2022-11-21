@@ -1,21 +1,19 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import './Header.css';
-import globalStore, { store } from 'redux/store';
-import { changeLang, logoutUser } from 'redux/appSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { changeLang, logoutUser } from 'redux/authSlice';
 
-import GlobalState from 'types/GlobalState';
 import HeaderType from 'types/HeaderType';
 import Constants from 'utils/Constants';
+import './Header.css';
 
 function Header(props: HeaderType) {
-  const isLogged = useSelector((state: GlobalState) => state.isLogged);
-  const isENLanguage = useSelector((state: GlobalState) => state.isENLanguage);
-
+  const isLogged = useAppSelector((state) => state.app.isLogged);
+  const isENLanguage = useAppSelector((state) => state.app.isENLanguage);
+  const dispatch = useAppDispatch();
   const [t, i18n] = useTranslation('common');
 
   useEffect(() => {
@@ -39,7 +37,7 @@ function Header(props: HeaderType) {
   }, []);
 
   function handleChange() {
-    globalStore.dispatch(changeLang({ lang: !isENLanguage }));
+    dispatch(changeLang({ lang: !isENLanguage }));
     i18n.changeLanguage(!isENLanguage ? Constants.LANGUAGE.EN : Constants.LANGUAGE.RU);
   }
 
@@ -72,7 +70,7 @@ function Header(props: HeaderType) {
             <Link
               className="header-link light-txt-brand"
               to="/"
-              onClick={() => store.dispatch(logoutUser())}
+              onClick={() => dispatch(logoutUser())}
             >
               {t('header.signOut')}
             </Link>

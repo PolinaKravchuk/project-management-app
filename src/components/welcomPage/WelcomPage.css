@@ -1,7 +1,7 @@
 .header-welcome-page {
   display: flex;
   justify-content: flex-end;
-  background-color: #F0EBCE;
+  background-color: #f0ebce;
   column-gap: 24px;
   padding: 8px 17px 0 0;
 }
@@ -15,23 +15,23 @@
   line-height: 19px;
   color: #000000;
   padding: 10px;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .header-welcome-page__link_active {
-  color: #F0EBCE;;
-  background: #4E6C50;
+  color: #f0ebce;
+  background: #4e6c50;
   border-radius: 10px;
 }
 
 .header-welcome-page__link:hover,
 .header-welcome-page__link_active:hover {
-  color: #AA8B56;
+  color: #aa8b56;
 }
 
 .header-welcome-page__link:active,
 .header-welcome-page__link_active:active {
-  transform: scale(.9);
+  transform: scale(0.9);
 }
 
 .about-app,
@@ -44,7 +44,7 @@
 
 .about-app,
 .about-course {
-  background-color: #F0EBCE;
+  background-color: #f0ebce;
   padding: 40px 0;
 }
 
@@ -103,7 +103,7 @@
 
 .about-team {
   min-height: 100vh;
-  background-color: #AA8B56;
+  background-color: #aa8b56;
   display: flex;
   justify-content: center;
 }
@@ -141,7 +141,7 @@
   font-size: 16px;
   line-height: 19px;
   text-align: center;
-  color: #F0EBCE;
+  color: #f0ebce;
   transition: 2s;
 }
 .about-team__link {
@@ -152,7 +152,7 @@
   box-shadow: 0 4px 10px 0 #ccc;
 }
 .about-team__name:active {
-  transform: scale(.9);
+  transform: scale(0.9);
 }
 .about-team__text {
   margin-top: 0;
@@ -182,5 +182,5 @@
   box-shadow: 0 4px 10px 0 #ccc;
 }
 .rss__img:active {
-  transform: scale(.9);
+  transform: scale(0.9);
 }
