@@ -1,7 +1,7 @@
 import React from 'react';
 import './WelcomPage.css';
 import { Link } from 'react-router-dom';
-import emblem from 'assets/img/emblem.png';
+import emblem from 'assets/img/page-logo.png';
 import { developers } from './aboutTeamData';
 import rsSchool from 'assets/img/rsSchool.png';
 import Footer from 'components/Footer';
@@ -15,7 +15,7 @@ export default function WelcomePage() {
     <>
       <Header type={Constants.PAGE.WELCOME} />
       <main className="main">
-        <section className="about-app">
+        <section className="about-app light-bg-brand">
           <div className="about-app-container">
             <h1 className="title">Project Management App</h1>
             <div className="about-app__content-container">
