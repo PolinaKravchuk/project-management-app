@@ -17,7 +17,7 @@ function Header(props: HeaderType) {
   const dispatch = useAppDispatch();
 
   let className = 'header dark-bg-brand';
-  className = props.type === Constants.PAGE.MAIN ? className + ' fixed' : className;
+  className = props.type !== Constants.PAGE.WELCOME ? className + ' fixed' : className;
 
   const [t, i18n] = useTranslation('common');
 
