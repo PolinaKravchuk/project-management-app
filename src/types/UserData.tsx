@@ -5,8 +5,19 @@ export type UserLogin = {
 export interface UserRegistration extends UserLogin {
   name: string;
 }
+
 export type User = {
-  _id: string;
+  id: string;
   name: string;
   login: string;
+};
+export type UserPayload = {
+  name: string;
+  login: string;
+  password: string;
+};
+export type UserParams = {
+  id: string;
+  token: string;
+  payload?: UserPayload;
 };

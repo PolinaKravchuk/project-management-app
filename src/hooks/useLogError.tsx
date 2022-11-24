@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import { receiveData, registerErrorMessage } from 'redux/authSlice';
 import { useAppDispatch } from 'redux/hooks';
+import { receiveData, registerErrorMessage } from 'redux/appSlice';
 
 export default function useLogError() {
   const [t] = useTranslation('common');

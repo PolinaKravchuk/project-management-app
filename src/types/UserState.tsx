@@ -1,9 +1,8 @@
-import { User } from './UserData';
-
 type UserState = {
-  data: User | object | void;
   inProgress: boolean;
-  userId: string;
+  id: string;
+  name: string;
+  password: string;
 };
 
 export default UserState;

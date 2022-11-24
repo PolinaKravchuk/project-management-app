@@ -1,43 +1,56 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import Constants from 'utils/Constants';
 import UserState from 'types/UserState';
+import { UserParams } from 'types/UserData';
+import Constants from 'utils/Constants';
 
 const initialState: UserState = {
-  data: {},
   inProgress: false,
-  userId: '',
+  id: '',
+  name: '',
+  password: '',
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-
   reducers: {
     loginUser: (state, action) => {
-      state.userId = action.payload._id;
+      state.id = action.payload.id;
+    },
+    setUserData: (state, action) => {
+      state.name = action.payload.name;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.data = action.payload;
-      state.inProgress = false;
-    });
-    builder.addCase(fetchUser.pending, (state) => {
-      state.inProgress = true;
-    });
-    builder.addCase(fetchUser.rejected, (state) => {
-      state.inProgress = false;
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.name = action.payload.name;
     });
   },
 });
 
 export default userSlice;
 
-export const fetchUser = createAsyncThunk('user/fetchUser', async (userId: string) => {
-  const res = await axios.get(`${Constants.APP_URL} + 'users/' + ${userId}`).then(() => {});
-  return res;
+export const updateUser = createAsyncThunk('user/updateUser', async (params: UserParams) => {
+  const payload = params.payload;
+  const res = await axios.put(`${Constants.APP_URL}users/${params.id}`, payload, {
+    headers: getHeaders(params),
+  });
+  return res.data;
 });
 
-export const { loginUser } = userSlice.actions;
+export const deleteUser = createAsyncThunk('user/deleteUser', async (params: UserParams) => {
+  const res = await axios.delete(`${Constants.APP_URL}users/${params.id}`, {
+    headers: getHeaders(params),
+  });
+  return res.data;
+});
+export const { loginUser, setUserData } = userSlice.actions;
+
+function getHeaders(params: UserParams) {
+  return {
+    Accept: 'application/json',
+    Authorization: 'Bearer ' + params.token,
+  };
+}

@@ -26,9 +26,13 @@
     },
     "submit": "Submit",
     "cancel": "Cancel",
-    "reset": "Reset"
+    "reset": "Reset",
+    "delete": "Delete"
   },
   "edit": {
     "title": "Edit Profile"
+  },
+  "notFound": {
+    "title": "404 - Not Found"
   }
 }

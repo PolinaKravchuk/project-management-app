@@ -6,6 +6,6 @@ export default function useCheckToken(token: string) {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    return axios.get(Constants.APP_URL + 'users', config);
+    return axios.get(Constants.APP_URL, config);
   };
 }

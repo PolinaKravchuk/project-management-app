@@ -3,13 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessage } from '@hookform/error-message';
-import { Button, CircularProgress, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
-import login from 'assets/img/login.png';
-import './Form.css';
-import Toast from 'components/toast/Toast';
-import Constants from 'utils/Constants';
 import { useAppSelector } from 'redux/hooks';
+import Toast from 'components/toast/Toast';
+import login from 'assets/img/login.png';
+import Constants from 'utils/Constants';
+import './Form.css';
 
 type FormProps = {
   type: string;
@@ -20,7 +20,6 @@ function Form(props: FormProps) {
 
   const navigate = useNavigate();
   const toastMessage = useAppSelector((state) => state.app.toastMessage);
-  const isPending = useAppSelector((state) => state.app.isPending);
   const {
     register,
     handleSubmit,
@@ -42,7 +41,6 @@ function Form(props: FormProps) {
 
   return (
     <>
-      {isPending && <CircularProgress className="busy-indicator" />}
       <main className="form-container light-bg-brand">
         {props.type === Constants.FORM_TYPE.REGISTRATION ? (
           <h2>{t('header.signUp')}</h2>
