@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +9,7 @@ import login from 'assets/img/login.png';
 import './Form.css';
 import Toast from 'components/toast/Toast';
 import Constants from 'utils/Constants';
-import GlobalState from 'types/GlobalState';
+import { useAppSelector } from 'redux/hooks';
 
 type FormProps = {
   type: string;
@@ -20,8 +19,8 @@ function Form(props: FormProps) {
   const [t] = useTranslation('common');
 
   const navigate = useNavigate();
-  const toastMessage = useSelector((state: GlobalState) => state.toastMessage);
-  const isPending = useSelector((state: GlobalState) => state.isPending);
+  const toastMessage = useAppSelector((state) => state.app.toastMessage);
+  const isPending = useAppSelector((state) => state.app.isPending);
   const {
     register,
     handleSubmit,

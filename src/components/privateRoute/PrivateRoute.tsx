@@ -1,10 +1,9 @@
 import React, { ReactElement } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import GlobalState from 'types/GlobalState';
+import { useAppSelector } from 'redux/hooks';
 
 function PrivateRoute(props: { element: ReactElement }) {
-  const isLogged = useSelector((state: GlobalState) => state.isLogged);
+  const isLogged = useAppSelector((state) => state.app.isLogged);
 
   if (!isLogged) {
     return <Navigate to="/" />;

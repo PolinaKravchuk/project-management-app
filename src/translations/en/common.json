@@ -25,6 +25,10 @@
       "maxLoginPassLength": "Field should has less then 15 characters"
     },
     "submit": "Submit",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "reset": "Reset"
+  },
+  "edit": {
+    "title": "Edit Profile"
   }
 }

@@ -1,17 +1,18 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// redux
-import store from 'redux/store';
-import { loginUser, receiveData } from 'redux/appSlice';
-// custom hook
+
+import { useAppDispatch } from 'redux/hooks';
+import { authUser, receiveData } from 'redux/authSlice';
+import { loginUser } from 'redux/userSlice';
 import useLogError from './useLogError';
-// others
+
 import { UserLogin } from 'types/UserData';
 import Constants from 'utils/Constants';
 
 export default function useLogin() {
   const navigate = useNavigate();
   const logError = useLogError();
+  const dispatch = useAppDispatch();
 
   return function (formData: UserLogin) {
     axios
@@ -20,10 +21,12 @@ export default function useLogin() {
         password: formData.password,
       })
       .then((res) => {
-        store.dispatch(receiveData({ isPending: false }));
+        dispatch(receiveData({ isPending: false }));
 
-        const token = res.data.token;
-        store.dispatch(loginUser({ token: token }));
+        const data = res.data;
+        dispatch(authUser({ token: data.token }));
+        dispatch(loginUser({ id: data._id }));
+
         navigate('/main');
         return Promise.resolve();
       })

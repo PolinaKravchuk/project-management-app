@@ -1,14 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Alert, AlertTitle } from '@mui/material';
-import GlobalState from 'types/GlobalState';
+import { useAppSelector } from 'redux/hooks';
 
 import './Toast.css';
 
 const Toast = function () {
-  const label = useSelector((state: GlobalState) => state.toastLabel);
-  const color = useSelector((state: GlobalState) => state.toastColor);
-  const message = useSelector((state: GlobalState) => state.toastMessage);
+  const label = useAppSelector((state) => state.app.toastLabel);
+  const color = useAppSelector((state) => state.app.toastColor);
+  const message = useAppSelector((state) => state.app.toastMessage);
 
   return (
     <Alert className="message-toast" severity={color}>
