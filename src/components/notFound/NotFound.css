@@ -1,0 +1,9 @@
+.page {
+  min-height: 100vh;
+}
+.page h2 {
+  margin-top: 0;
+}
+.not-found-img {
+  width: 60%;
+}

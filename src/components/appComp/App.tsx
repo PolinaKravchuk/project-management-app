@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 import Constants from 'utils/Constants';
@@ -23,6 +23,7 @@ function App() {
   const { token } = useAppSelector((state) => state.auth) || localStorage.getItem('token');
 
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const checkToken = useCheckToken(token);
 
@@ -30,7 +31,11 @@ function App() {
   useEffect(() => {
     checkToken().catch(() => {
       dispatch(logoutUser());
-      navigate('/');
+      if (location.pathname !== `/${Constants.PAGE.WELCOME}`) {
+        navigate(`/${Constants.PAGE.NOT_FOUND}`);
+      } else {
+        navigate(`/${Constants.PAGE.WELCOME}`);
+      }
     });
   }, []);
 
@@ -41,7 +46,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} />
         <Route path="welcome" element={<WelcomePage />} />
-        <Route path="/notFound" element={<NotFound />} />
+        <Route path="/404" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route
@@ -49,7 +54,7 @@ function App() {
           element={<PrivateRoute element={<Header type={Constants.PAGE.MAIN} />}></PrivateRoute>}
         />
         <Route path="/edit" element={<PrivateRoute element={<EditProfile />}></PrivateRoute>} />
-        <Route path="*" element={<Navigate to="/notFound" />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
       {toastMessage && <Toast />}
     </div>

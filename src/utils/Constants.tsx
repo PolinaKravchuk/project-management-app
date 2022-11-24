@@ -8,6 +8,7 @@ const Constants = {
   PAGE: {
     WELCOME: 'welcome',
     MAIN: 'main',
+    NOT_FOUND: '404',
   },
 
   TOAST_TYPE: {
