@@ -1,20 +1,19 @@
 import React from 'react';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import '../Form.css';
-
-import store from 'redux/store';
-import { registerSuccessMessage, requestData } from 'redux/authSlice';
+import axios from 'axios';
 
 import useLogin from 'hooks/useLogin';
 import useLogError from 'hooks/useLogError';
+
+import { useAppDispatch } from 'redux/hooks';
+import { registerSuccessMessage, requestData } from 'redux/appSlice';
 
 import Header from 'components/header/Header';
 import Form from 'components/form/Form';
 
 import { UserRegistration } from 'types/UserData';
 import Constants from 'utils/Constants';
-import { useAppDispatch } from 'redux/hooks';
+import '../Form.css';
 
 function Registration() {
   const login = useLogin();
@@ -44,7 +43,7 @@ function Registration() {
   }
   return (
     <>
-      <Header />
+      <Header type={Constants.PAGE.WELCOME} />
       <Form type={Constants.FORM_TYPE.REGISTRATION} onSubmit={handleRegister} />
     </>
   );

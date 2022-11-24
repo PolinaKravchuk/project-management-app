@@ -1,61 +1,37 @@
-import { AlertColor } from '@mui/material';
 import { createSlice } from '@reduxjs/toolkit';
-import GlobalState from 'types/GlobalState';
-import Constants from 'utils/Constants';
+import AuthState from 'types/AuthState';
 
-const initialState: GlobalState = {
+const initialState: AuthState = {
   isLogged: false,
-  isENLanguage: true,
-  isPending: false,
   token: localStorage.getItem('token') || '',
-  toastLabel: '',
-  toastColor: 'info',
-  toastMessage: '',
+  login: '',
+  password: '',
 };
 const authSlice = createSlice({
-  name: 'app',
+  name: 'auth',
   initialState,
   reducers: {
-    requestData: (state, action) => {
-      state.isPending = action.payload.isPending;
-    },
-    receiveData: (state, action) => {
-      state.isPending = action.payload.isPending;
-    },
-    registerErrorMessage: (state, action) => {
-      state.toastLabel = action.payload.label;
-      state.toastColor = Constants.TOAST_TYPE.ERROR as AlertColor;
-      state.toastMessage = action.payload.message;
-    },
-    registerSuccessMessage: (state, action) => {
-      state.toastLabel = action.payload.label;
-      state.toastColor = Constants.TOAST_TYPE.SUCCESS as AlertColor;
-      state.toastMessage = action.payload.message;
-    },
-    authUser: (state, action) => {
+    setCredentials: (state, action) => {
       state.isLogged = true;
       state.token = action.payload.token;
+      state.login = action.payload.login;
+      state.password = action.payload.password;
+
       localStorage.setItem('token', action.payload.token);
+    },
+    updateLogin: (state, action) => {
+      state.login = action.payload.login;
     },
     logoutUser: (state) => {
       state.isLogged = false;
       state.token = '';
+      state.login = '';
+      state.password = '';
+
       localStorage.setItem('token', '');
-    },
-    changeLang: (state, action) => {
-      state.isENLanguage = action.payload.lang;
     },
   },
 });
 
-export const isPending = (state: GlobalState) => state.isPending;
-export const {
-  requestData,
-  receiveData,
-  registerErrorMessage,
-  registerSuccessMessage,
-  authUser,
-  logoutUser,
-  changeLang,
-} = authSlice.actions;
+export const { setCredentials, updateLogin, logoutUser } = authSlice.actions;
 export default authSlice;
