@@ -33,6 +33,7 @@
     "title": "Edit Profile"
   },
   "notFound": {
-    "title": "404 - Not Found"
+    "title": "404 - Not Found",
+    "content": "Sorry, we don't know this page. Try again!"
   }
 }
