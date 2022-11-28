@@ -35,5 +35,30 @@
   "notFound": {
     "title": "404 - Not Found",
     "content": "Sorry, we don't know this page. Try again!"
+  },
+  "welcomePage": {
+    "aboutUp": {
+      "aboutTitle": "Project Management App",
+      "paragraph1": "Don’t panic if you have a lot of things to do.",
+      "strong": "Managerka",
+      "paragraph2": "helps you to deal with all problems you have, exept divorse etc."
+    },
+    "aboutTeam": {
+      "aboutTitle": "About team",
+      "polina": "Team Lead",
+      "nikolay": "Frontend developer",
+      "andrei": "Frontend developer"
+    },
+    "aboutCourse": {
+      "aboutTitle": "RS School",
+      "paragraph1": "RS School is free-of-charge and community-based education program conducted by The Rolling Scopes developer community since 2013. Everyone can study at RS School, regardless of age, professional employment, or place of residence. Thementors and trainers of our school are front-end and javascript developers from different companies and countries. You can learn more about the course by clicking on the logo below."
+    }
+  },
+  "main": {
+    "modalCreateTitle": "New board",
+    "placeholderTitle": "Title",
+    "placeholderInvaiteUsers": "Invaite users",
+    "placeholderDescription": "Description",
+    "modalConfirm": "Are you sure you want to delete"
   }
 }

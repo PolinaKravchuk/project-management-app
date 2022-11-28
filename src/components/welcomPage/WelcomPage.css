@@ -85,6 +85,7 @@
   font-size: 32px;
   line-height: 39px;
   color: #000000;
+  text-align: start;
 }
 
 .about-app__text {
