@@ -17,6 +17,9 @@ import WelcomePage from 'components/welcomPage';
 import EditProfile from 'components/edit/EditProfile';
 import NotFound from 'components/notFound/NotFound';
 import './App.css';
+import Footer from 'components/Footer';
+import Main from 'components/main';
+import Board from 'components/board';
 
 function App() {
   const { toastMessage, isPending } = useAppSelector((state) => state.app);
@@ -45,13 +48,37 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} />
-        <Route path="welcome" element={<WelcomePage />} />
+        <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route
           path="/main"
-          element={<PrivateRoute element={<Header type={Constants.PAGE.MAIN} />}></PrivateRoute>}
+          element={
+            <PrivateRoute
+              element={
+                <>
+                  <Header type={Constants.PAGE.MAIN} />
+                  <Main />
+                  <Footer />
+                </>
+              }
+            ></PrivateRoute>
+          }
+        />
+        <Route
+          path="/board/:_id"
+          element={
+            <PrivateRoute
+              element={
+                <>
+                  <Header type={Constants.PAGE.MAIN} />
+                  <Board />
+                  <Footer />
+                </>
+              }
+            ></PrivateRoute>
+          }
         />
         <Route path="/edit" element={<PrivateRoute element={<EditProfile />}></PrivateRoute>} />
         <Route path="*" element={<Navigate to="/404" />} />

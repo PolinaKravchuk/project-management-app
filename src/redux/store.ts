@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import appSlice from './appSlice';
 import authSlice from './authSlice';
+import mainSlice from './mainSlice';
 import userSlice from './userSlice';
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     app: appSlice.reducer,
     auth: authSlice.reducer,
     user: userSlice.reducer,
+    main: mainSlice,
   },
 });
 export default store;
