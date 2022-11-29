@@ -8,7 +8,7 @@ import removeImg from 'assets/img/remove.svg';
 import closeImg from 'assets/img/close.svg';
 import './Column.css';
 
-export default function Board(props: Column) {
+export default function Column(props: Column) {
   const [t] = useTranslation('common');
   const [editMode, setEditMode] = useState(false);
   return (

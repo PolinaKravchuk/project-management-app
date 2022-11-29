@@ -3,7 +3,7 @@ import { Task } from './types';
 import removeImg from 'assets/img/remove.svg';
 import './Task.css';
 
-export default function Board(props: Task) {
+export default function Task(props: Task) {
   return (
     <>
       <div className="board-body__card__task">
