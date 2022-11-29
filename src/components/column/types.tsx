@@ -1,3 +1,3 @@
-export interface Column {
+export interface IColumn {
   title: string;
 }

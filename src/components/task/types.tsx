@@ -1,3 +1,3 @@
-export interface Task {
+export interface ITask {
   title: string;
 }

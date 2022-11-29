@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Column } from './types';
+import { IColumn } from './types';
 import Task from 'components/task';
 
 import checkImg from 'assets/img/check.svg';
@@ -8,7 +8,7 @@ import removeImg from 'assets/img/remove.svg';
 import closeImg from 'assets/img/close.svg';
 import './Column.css';
 
-export default function Column(props: Column) {
+export default function Column(props: IColumn) {
   const [t] = useTranslation('common');
   const [editMode, setEditMode] = useState(false);
   return (
