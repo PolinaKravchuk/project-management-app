@@ -7,10 +7,10 @@ type AppState = {
   toastColor: AlertColor;
   toastMessage: string;
   isConfirmModal: boolean;
-  сonfirmModalId: { 
+  сonfirmModalId: {
     name: string;
     id: string;
-   };
+  };
 };
 
 export default AppState;

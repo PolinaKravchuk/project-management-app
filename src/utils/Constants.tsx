@@ -5,10 +5,16 @@ const Constants = {
     SIGN_IN: 'auth/signin',
   },
 
+  ERROR_STATUS: {
+    EXPIRED: '403',
+    NOT_FOUND: '404',
+  },
   PAGE: {
     WELCOME: 'welcome',
     MAIN: 'main',
     NOT_FOUND: '404',
+    BOARD: 'board',
+    EDIT: 'edit',
   },
 
   TOAST_TYPE: {

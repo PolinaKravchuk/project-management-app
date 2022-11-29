@@ -84,7 +84,6 @@ function EditProfile() {
 
   return (
     <>
-      <Header />
       <main className="edit-profile-main light-bg-brand">
         <h2>{t('edit.title')}</h2>
         <form className="form" onSubmit={handleSubmit(onSubmitForm)}>

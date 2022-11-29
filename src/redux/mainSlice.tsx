@@ -89,7 +89,7 @@ export const fetchAddBoard = createAsyncThunk<Board, MainParams, { rejectValue: 
 export const fetchGetBoards = createAsyncThunk<Board[], string, { rejectValue: string }>(
   'getBoard/fetch',
   async (token, { rejectWithValue }) => {
-    const response = await fetch(Constants.APP_URL + 'boardss', {
+    const response = await fetch(Constants.APP_URL + 'boards', {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',

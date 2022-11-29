@@ -1,30 +1,35 @@
 @font-face {
   font-family: PFDinDisplayPro;
   src: url('assets/fonts/PFDinDisplayPro-Regular.eot');
-  src: local("☺"), url('assets/fonts/PFDinDisplayPro-Regular.woff') format("woff"), url('assets/fonts/PFDinDisplayPro-Regular.ttf') format("truetype"), url('assets/fonts/PFDinDisplayPro-Regular.svg') format("svg");
+  src: local('☺'), url('assets/fonts/PFDinDisplayPro-Regular.woff') format('woff'),
+    url('assets/fonts/PFDinDisplayPro-Regular.ttf') format('truetype'),
+    url('assets/fonts/PFDinDisplayPro-Regular.svg') format('svg');
 }
 body {
   margin: 0px;
 }
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   height: 15px;
   -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 0 0 10px 10px;
 }
-::-webkit-scrollbar-thumb:horizontal{
+::-webkit-scrollbar-thumb:horizontal {
   background-color: #f2bf93;
-  background-image: -webkit-linear-gradient(45deg,rgba(255, 255, 255, 0.25) 25%,
-                    transparent 25%,
-                    transparent 50%,
-                    rgba(255, 255, 255, 0.25) 50%,
-                    rgba(255, 255, 255, 0.25) 75%,
-                    transparent 75%,
-                    transparent);
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.25) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.25) 75%,
+    transparent 75%,
+    transparent
+  );
   border-radius: 0 0 10px 10px;
 }
 .board-wrapper {
-  background: #F0EBCE;
+  background: #f0ebce;
   width: 100%;
   display: flex;
   flex-direction: column;

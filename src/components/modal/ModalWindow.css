@@ -17,11 +17,11 @@
 .modal-window {
   display: flex;
   flex-direction: column;
-  border-radius: 12px; 
+  border-radius: 12px;
   box-shadow: 0 10px 20px -0px #0008;
   cursor: auto;
 }
 .modal__content {
-  padding: 5px 20px; 
-  border-radius: 12px; 
+  padding: 5px 20px;
+  border-radius: 12px;
 }

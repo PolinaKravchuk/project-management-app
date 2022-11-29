@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { openModal } from 'redux/mainSlice';
 import { logoutUser } from 'redux/authSlice';
 import { changeLang } from 'redux/appSlice';
 
@@ -11,13 +12,11 @@ import logo from 'assets/img/small-logo.png';
 import HeaderType from 'types/HeaderType';
 import Constants from 'utils/Constants';
 import './Header.css';
-import { openModal } from 'redux/mainSlice';
 
 function Header(props: HeaderType) {
   const { isENLanguage } = useAppSelector((state) => state.app);
   const { isLogged } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-
   let className = 'header dark-bg-brand';
   className = props.type !== Constants.PAGE.WELCOME ? className + ' fixed' : className;
 
