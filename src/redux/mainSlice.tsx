@@ -79,7 +79,7 @@ export const fetchAddBoard = createAsyncThunk<Board, MainParams, { rejectValue: 
     });
 
     if (!response.ok) {
-      return rejectWithValue('Не удалось создать доску!');
+      return rejectWithValue('main.mainErrorMessage.addBoard');
     }
     const data: Board = await response.json();
 
@@ -89,14 +89,14 @@ export const fetchAddBoard = createAsyncThunk<Board, MainParams, { rejectValue: 
 export const fetchGetBoards = createAsyncThunk<Board[], string, { rejectValue: string }>(
   'getBoard/fetch',
   async (token, { rejectWithValue }) => {
-    const response = await fetch(Constants.APP_URL + 'boards', {
+    const response = await fetch(Constants.APP_URL + 'boardss', {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
       },
     });
     if (!response.ok) {
-      return rejectWithValue('Не удалось загрузить доски!');
+      return rejectWithValue('main.mainErrorMessage.getBoard');
     }
     const data = await response.json();
     const boards: Board[] = data.map((board: Board) => {
@@ -121,7 +121,7 @@ export const fetchRemoveBoard = createAsyncThunk<Board, MainRemoveParams, { reje
     });
 
     if (!response.ok) {
-      return rejectWithValue('Не удалось удалить доску!');
+      return rejectWithValue('main.mainErrorMessage.removeBoard');
     }
     const data: Board = await response.json();
     return data;

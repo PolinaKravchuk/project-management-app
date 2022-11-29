@@ -66,7 +66,7 @@ export default function Main() {
     <>
       <main className="main page light-bg-brand main-padding">
         {error ? (
-          <h2 className="main_error">{error}</h2>
+          <h2 className="main_error">{t(error)}</h2>
         ) : (
           !!boards.length && (
             <ul className="boards">
