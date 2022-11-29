@@ -9,6 +9,7 @@ const initialState: AppState = {
   toastLabel: '',
   toastColor: 'info',
   toastMessage: '',
+  isModal: false,
   isConfirmModal: false,
   сonfirmModalId: {
     name: '',
@@ -39,6 +40,13 @@ const appSlice = createSlice({
     changeLang: (state, action) => {
       state.isENLanguage = action.payload.lang;
     },
+    openModal(state) {
+      state.isModal = true;
+    },
+    closeModal(state) {
+      state.isModal = false;
+      state.isConfirmModal = false;
+    },
     openConfirmModal(state) {
       state.isConfirmModal = true;
     },
@@ -57,6 +65,8 @@ export const {
   registerErrorMessage,
   registerSuccessMessage,
   changeLang,
+  openModal,
+  closeModal,
   openConfirmModal,
   closeConfirmModal,
   currentConfirmModalId,

@@ -3,10 +3,6 @@ import { Board, MainParams, MainRemoveParams, MainState } from 'types/MainState'
 import Constants from 'utils/Constants';
 
 const initialState: MainState = {
-  isModal: false,
-  isConfirmModal: false,
-  isPending: false,
-  currentBoardRemoveId: '',
   error: '',
   boards: [],
 };
@@ -14,21 +10,7 @@ const initialState: MainState = {
 export const mainReducer = createSlice({
   name: 'main',
   initialState,
-  reducers: {
-    openModal(state) {
-      state.isModal = true;
-    },
-    closeModal(state) {
-      state.isModal = false;
-      state.isConfirmModal = false;
-    },
-    confirmModalText(state) {
-      state.isConfirmModal = true;
-    },
-    saveCurrentBoardRemove(state, action: PayloadAction<string>) {
-      state.currentBoardRemoveId = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchAddBoard.pending, (state) => {
@@ -61,8 +43,6 @@ function isError(action: AnyAction) {
   return action.type.endsWith('rejected');
 }
 
-export const { openModal, closeModal, confirmModalText, saveCurrentBoardRemove } =
-  mainReducer.actions;
 export default mainReducer.reducer;
 
 export const fetchAddBoard = createAsyncThunk<Board, MainParams, { rejectValue: string }>(

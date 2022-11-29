@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { openModal } from 'redux/mainSlice';
 import { logoutUser } from 'redux/authSlice';
-import { changeLang } from 'redux/appSlice';
+import { changeLang, openModal } from 'redux/appSlice';
 
 import logo from 'assets/img/small-logo.png';
 import HeaderType from 'types/HeaderType';

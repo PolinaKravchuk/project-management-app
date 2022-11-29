@@ -6,6 +6,7 @@ type AppState = {
   toastLabel: string;
   toastColor: AlertColor;
   toastMessage: string;
+  isModal: boolean;
   isConfirmModal: boolean;
   сonfirmModalId: {
     name: string;
