@@ -7,21 +7,19 @@ import { Button, TextField } from '@mui/material';
 import Header from 'components/header/Header';
 import Toast from 'components/toast/Toast';
 
-import { logoutUser, updateLogin } from 'redux/authSlice';
-import { receiveData, requestData } from 'redux/appSlice';
-import { deleteUser, setUserData, updateUser } from 'redux/userSlice';
+import { updateLogin } from 'redux/authSlice';
+import { currentConfirmModalId, openConfirmModal, receiveData, requestData } from 'redux/appSlice';
+import { setUserData, updateUser } from 'redux/userSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 import useLogError from 'hooks/useLogError';
 import './EditProfile.css';
-import { useNavigate } from 'react-router-dom';
 
 // component is in progress
 function EditProfile() {
   const [t] = useTranslation('common');
   const logError = useLogError();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const { token, login, password } = useAppSelector((state) => state.auth);
   const { id, name } = useAppSelector((state) => state.user);
@@ -80,19 +78,8 @@ function EditProfile() {
   function handleDelete() {
     // TODO: show confirmation modal window
 
-    dispatch(requestData({ isPending: true }));
-
-    dispatch(deleteUser({ id, token }))
-      .then(() => {
-        dispatch(logoutUser());
-        navigate('/');
-      })
-      .catch((e) => {
-        logError(e);
-      })
-      .finally(() => {
-        dispatch(receiveData({ isPending: false }));
-      });
+    dispatch(openConfirmModal());
+    dispatch(currentConfirmModalId({ name: 'edit', id }));
   }
 
   return (
