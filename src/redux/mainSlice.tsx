@@ -32,30 +32,26 @@ export const mainReducer = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAddBoard.pending, (state) => {
-        state.isPending = true;
+        state.error = '';
       })
       .addCase(fetchAddBoard.fulfilled, (state, action) => {
-        state.isPending = false;
         const { title, description } = JSON.parse(action.payload.title);
         const addBoard: Board = { ...action.payload, title, description };
         state.boards.push(addBoard);
       })
       .addCase(fetchGetBoards.pending, (state) => {
-        state.isPending = true;
+        state.error = '';
       })
       .addCase(fetchGetBoards.fulfilled, (state, action) => {
-        state.isPending = false;
         state.boards = action.payload;
       })
       .addCase(fetchRemoveBoard.pending, (state) => {
-        state.isPending = true;
+        state.error = '';
       })
       .addCase(fetchRemoveBoard.fulfilled, (state, action) => {
-        state.isPending = false;
         state.boards = state.boards.filter((board) => board._id !== action.payload._id);
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
-        state.isPending = false;
         state.error = action.payload;
       });
   },
@@ -114,8 +110,8 @@ export const fetchGetBoards = createAsyncThunk<Board[], string, { rejectValue: s
 
 export const fetchRemoveBoard = createAsyncThunk<Board, MainRemoveParams, { rejectValue: string }>(
   'removeBoard/fetch',
-  async ({ token, currentBoardRemoveId }, { rejectWithValue }) => {
-    const response = await fetch(`${Constants.APP_URL}boards/${currentBoardRemoveId}`, {
+  async ({ token, id }, { rejectWithValue }) => {
+    const response = await fetch(`${Constants.APP_URL}boards/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

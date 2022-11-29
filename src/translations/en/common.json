@@ -59,6 +59,11 @@
     "placeholderTitle": "Title",
     "placeholderInvaiteUsers": "Invaite users",
     "placeholderDescription": "Description",
-    "modalConfirm": "Are you sure you want to delete"
+    "modalConfirm": "Are you sure you want to delete",
+    "mainErrorMessage": {
+      "addBoard": "Failed to create board!",
+      "getBoard": "Failed to load boards!",
+      "removeBoard": "Unable to delete board!"
+    }
   }
 }

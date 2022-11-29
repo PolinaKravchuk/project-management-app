@@ -59,6 +59,11 @@
     "placeholderTitle": "Заголовок",
     "placeholderInvaiteUsers": "Пригласить пользователей",
     "placeholderDescription": "Описание",
-    "modalConfirm": "Вы точно хотите удалить"
+    "modalConfirm": "Вы точно хотите удалить",
+    "mainErrorMessage": {
+      "addBoard": "Не удалось создать доску!",
+      "getBoard": "Не удалось загрузить доски!",
+      "removeBoard": "Не удалось удалить доску!"
+    }
   }
 }

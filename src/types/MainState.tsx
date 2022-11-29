@@ -21,5 +21,5 @@ export interface MainParams {
 }
 export interface MainRemoveParams {
   token: string;
-  currentBoardRemoveId: string;
+  id: string;
 }
