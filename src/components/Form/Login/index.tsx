@@ -2,8 +2,8 @@ import React from 'react';
 
 import useLogin from 'hooks/useLogin';
 
-import Header from 'components/header/Header';
-import Form from 'components/form/Form';
+import Header from 'components/Header';
+import Form from 'components/Form';
 
 import Constants from 'utils/Constants';
 import { UserLogin } from 'types/UserData';

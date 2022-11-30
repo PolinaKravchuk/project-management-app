@@ -4,30 +4,31 @@ import { useForm } from 'react-hook-form';
 import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { fetchRemoveBoard } from 'redux/mainSlice';
-import { deleteUser } from 'redux/userSlice';
 import { logoutUser } from 'redux/authSlice';
+import { deleteUser } from 'redux/userSlice';
+import { fetchRemoveBoard } from 'redux/mainSlice';
+import { fetchRemoveColumn } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { closeConfirmModal, currentConfirmModalId, receiveData, requestData } from 'redux/appSlice';
 import useCheckToken from 'hooks/useCheckToken';
 import useLogError from 'hooks/useLogError';
 
-import Toast from 'components/toast/Toast';
-import Header from 'components/header/Header';
-import Login from 'components/form/login/Login';
-import Registration from 'components/form/registration/Registration';
-import PrivateRoute from 'components/privateRoute/PrivateRoute';
-import WelcomePage from 'components/welcomPage';
-import EditProfile from 'components/edit/EditProfile';
-import NotFound from 'components/notFound/NotFound';
+import Toast from 'components/Toast';
+import Header from 'components/Header';
+import Login from 'components/Form/Login';
+import Registration from 'components/Form/Registration';
+import PrivateRoute from 'components/PrivateRoute';
+import WelcomePage from 'components/WelcomPage';
+import EditProfile from 'components/Edit';
+import NotFound from 'components/NotFound';
 import Footer from 'components/Footer';
-import Main from 'components/main';
-import Board from 'components/board';
-import ModalWindow from 'components/modal';
+import Main from 'components/Main';
+import Board from 'components/Board';
+import ModalWindow from 'components/Modal';
 
 import Constants from 'utils/Constants';
 import './App.css';
-import { fetchRemoveColumn } from 'redux/boardSlice';
+import useLogSuccess from 'hooks/useLogSuccess';
 
 function App() {
   const { toastMessage, isPending, isConfirmModal, сonfirmModalId } = useAppSelector(
@@ -37,7 +38,7 @@ function App() {
   const { handleSubmit } = useForm();
   const [t] = useTranslation('common');
   const logError = useLogError();
-
+  const logSuccess = useLogSuccess();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -58,18 +59,19 @@ function App() {
   }, []);
 
   const handelConfirmRemove = () => {
-    dispatch(requestData({ isPending: true }));
+    dispatch(requestData());
     const { name, id, boardId } = сonfirmModalId;
     switch (name) {
       case 'board':
         dispatch(fetchRemoveBoard({ token, id })).finally(() => {
-          dispatch(receiveData({ isPending: false }));
+          dispatch(receiveData());
           dispatch(currentConfirmModalId({ name: '', id: '' }));
         });
         break;
       case 'edit':
         dispatch(deleteUser({ id, token }))
           .then(() => {
+            logSuccess('edit.removeSuccess');
             dispatch(logoutUser());
             navigate('/welcome');
           })
@@ -77,13 +79,13 @@ function App() {
             logError(e);
           })
           .finally(() => {
-            dispatch(receiveData({ isPending: false }));
+            dispatch(receiveData());
             dispatch(currentConfirmModalId({ name: '', id: '' }));
           });
         break;
       case 'column':
         dispatch(fetchRemoveColumn({ token, _id: id, boardId })).finally(() => {
-          dispatch(receiveData({ isPending: false }));
+          dispatch(receiveData());
           dispatch(currentConfirmModalId({ name: '', id: '', boardId: '' }));
         });
         break;

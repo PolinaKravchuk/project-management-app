@@ -10,7 +10,7 @@ import common_ru from 'translations/ru/common.json';
 import common_en from 'translations/en/common.json';
 
 import { store } from './redux/store';
-import App from 'components/appComp/App';
+import App from 'components/AppComp';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import Constants from 'utils/Constants';

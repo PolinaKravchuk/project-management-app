@@ -8,8 +8,8 @@ import useLogError from 'hooks/useLogError';
 import { useAppDispatch } from 'redux/hooks';
 import { registerSuccessMessage, requestData } from 'redux/appSlice';
 
-import Header from 'components/header/Header';
-import Form from 'components/form/Form';
+import Header from 'components/Header';
+import Form from 'components/Form';
 
 import { UserRegistration } from 'types/UserData';
 import Constants from 'utils/Constants';
@@ -22,7 +22,7 @@ function Registration() {
   const [t] = useTranslation('common');
 
   function handleRegister(formData: UserRegistration) {
-    dispatch(requestData({ isPending: true }));
+    dispatch(requestData());
     axios
       .post(Constants.APP_URL + Constants.AUTH_API.SIGN_UP, formData)
       .then(() => login(formData))

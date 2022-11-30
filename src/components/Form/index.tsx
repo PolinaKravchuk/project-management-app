@@ -6,7 +6,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Button, TextField } from '@mui/material';
 
 import { useAppSelector } from 'redux/hooks';
-import Toast from 'components/toast/Toast';
+import Toast from 'components/Toast';
 import login from 'assets/img/login.png';
 import Constants from 'utils/Constants';
 import './Form.css';
