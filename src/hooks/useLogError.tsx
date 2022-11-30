@@ -8,7 +8,7 @@ export default function useLogError() {
   const dispatch = useAppDispatch();
 
   return function (e: { message: string }) {
-    dispatch(receiveData({ isPending: false }));
+    dispatch(receiveData());
 
     const message = e.message;
     dispatch(registerErrorMessage({ message: message, label: t('toast.errorLabel') }));

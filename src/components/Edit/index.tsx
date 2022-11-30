@@ -4,14 +4,14 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button, TextField } from '@mui/material';
 
-import Header from 'components/header/Header';
-import Toast from 'components/toast/Toast';
+import Toast from 'components/Toast';
 
 import { updateLogin } from 'redux/authSlice';
 import { currentConfirmModalId, openConfirmModal, receiveData, requestData } from 'redux/appSlice';
 import { setUserData, updateUser } from 'redux/userSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
+import useLogSuccess from 'hooks/useLogSuccess';
 import useLogError from 'hooks/useLogError';
 import './EditProfile.css';
 
@@ -19,6 +19,7 @@ import './EditProfile.css';
 function EditProfile() {
   const [t] = useTranslation('common');
   const logError = useLogError();
+  const logSuccess = useLogSuccess();
   const dispatch = useAppDispatch();
 
   const { token, login, password } = useAppSelector((state) => state.auth);
@@ -43,13 +44,17 @@ function EditProfile() {
   }
 
   function handleCancel() {
-    setInitialData();
+    if (isDirty) {
+      logSuccess('edit.resetChages');
+
+      setInitialData();
+    }
   }
 
   function onSubmitForm() {
     const newUserData = watch();
     if (isDirty) {
-      dispatch(requestData({ isPending: true }));
+      dispatch(requestData());
 
       const params = {
         id: id,
@@ -65,19 +70,19 @@ function EditProfile() {
         .then((data) => {
           dispatch(updateLogin(data.payload));
           dispatch(setUserData(data.payload));
+
+          logSuccess('edit.updateSuccess');
         })
         .catch((e) => {
           logError(e);
         })
         .finally(() => {
-          dispatch(receiveData({ isPending: false }));
+          dispatch(receiveData());
         });
     }
   }
 
   function handleDelete() {
-    // TODO: show confirmation modal window
-
     dispatch(openConfirmModal());
     dispatch(currentConfirmModalId({ name: 'edit', id }));
   }
@@ -161,10 +166,15 @@ function EditProfile() {
             </div>
           </div>
           <div className="form-buttons">
-            <Button className="form-button light-txt-brand" type="submit" variant="outlined">
+            <Button
+              className="form-button light-txt-brand"
+              type="submit"
+              variant="outlined"
+              disabled={!isDirty}
+            >
               {t('form.submit')}
             </Button>
-            <Button variant="outlined" onClick={handleCancel}>
+            <Button variant="outlined" onClick={handleCancel} disabled={!isDirty}>
               {t('form.cancel')}
             </Button>
             <Button color="error" variant="outlined" onClick={handleDelete}>

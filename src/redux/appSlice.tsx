@@ -21,11 +21,11 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    requestData: (state, action) => {
-      state.isPending = action.payload.isPending;
+    requestData: (state) => {
+      state.isPending = true;
     },
-    receiveData: (state, action) => {
-      state.isPending = action.payload.isPending;
+    receiveData: (state) => {
+      state.isPending = false;
     },
     registerErrorMessage: (state, action) => {
       state.toastLabel = action.payload.label;

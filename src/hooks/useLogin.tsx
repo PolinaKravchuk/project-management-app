@@ -16,7 +16,7 @@ export default function useLogin() {
   const dispatch = useAppDispatch();
 
   return function (formData: UserLogin) {
-    dispatch(requestData({ isPending: true }));
+    dispatch(requestData());
 
     axios
       .post(Constants.APP_URL + Constants.AUTH_API.SIGN_IN, {
@@ -35,7 +35,7 @@ export default function useLogin() {
         logError(e);
       })
       .finally(() => {
-        dispatch(receiveData({ isPending: false }));
+        dispatch(receiveData());
       });
   };
 }

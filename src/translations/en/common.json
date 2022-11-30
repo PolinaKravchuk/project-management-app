@@ -30,7 +30,10 @@
     "delete": "Delete"
   },
   "edit": {
-    "title": "Edit Profile"
+    "title": "Edit Profile",
+    "updateSuccess": "User updated successfully",
+    "removeSuccess": "User removed successfully",
+    "resetChages": "Changes are reset"
   },
   "notFound": {
     "title": "404 - Not Found",
