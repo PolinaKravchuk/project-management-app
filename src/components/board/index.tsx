@@ -17,13 +17,16 @@ import {
 } from 'redux/appSlice';
 import { fetchAddColumn, fetchGetColumns } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import boardAvatar from 'assets/img/boardAvatar.png';
 import './Board.css';
+import { getUser } from 'redux/userSlice';
 
 export default function Board() {
   const [t] = useTranslation('common');
   const { isModal } = useAppSelector((state) => state.app);
   const { token } = useAppSelector((state) => state.auth);
   const { boards } = useAppSelector((state) => state.main);
+  const { name } = useAppSelector((state) => state.user);
   const { columns, error, order } = useAppSelector((state) => state.board);
   const dispatch = useAppDispatch();
   const { _id } = useParams();
@@ -41,12 +44,19 @@ export default function Board() {
       dispatch(fetchGetColumns({ _id, token })).finally(() => dispatch(receiveData()));
     }
   }, []);
+  const board = boards.find((board) => board._id === _id);
+
+  useEffect(() => {
+    if (board) {
+      dispatch(requestData());
+      dispatch(getUser({ id: board?.owner, token: token })).finally(() => dispatch(receiveData()));
+    }
+  }, []);
 
   if (!token) {
     return <Navigate to="/welcome" />;
   }
 
-  const board = boards.find((board) => board._id === _id);
   const columnsSort = columns.filter((column) => column.boardId === _id);
 
   const onSubmit = async (value: { title: string }) => {
@@ -84,12 +94,23 @@ export default function Board() {
   return (
     <>
       <main className="board-wrapper light-bg-brand main-padding">
-        <div>
-          {t('board.label')}-{_id}
+        <div className="board-header">
+          <div className="board-header-avatar">
+            <img src={boardAvatar} alt="avatar" />
+          </div>
+          <div className="board-header-desc">
+            <div>
+              <h2>{board?.title} </h2>
+              <span className="board-id">{_id}</span>
+              <p></p>
+            </div>
+            <p>{board?.description}</p>
+            <p>
+              <strong>{t('board.createdBy')}</strong>
+              {name}
+            </p>
+          </div>
         </div>
-        <p>{board?.title}</p>
-        <p>{board?.description}</p>
-        <p>{board?.owner}</p>
         {error && <h2 className="main_error">{t(error)}</h2>}
         <section className="board-body">
           {error

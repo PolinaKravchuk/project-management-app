@@ -74,6 +74,7 @@
     "todo": "Сделать",
     "addColumn": "Добавить колонку",
     "addTask": "Добавить задачу",
+    "createdBy": "Создан: ",
     "boardErrorMessage": {
       "addColumn": "Не удалось создать столбец!",
       "getColumn": "Не удалось загрузить столбец!",
