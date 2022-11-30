@@ -1,5 +1,11 @@
 import { AlertColor } from '@mui/material';
 
+export interface ConfirmModal {
+  name: string;
+  id: string;
+  boardId?: string;
+}
+
 type AppState = {
   isENLanguage: boolean;
   isPending: boolean;
@@ -8,10 +14,7 @@ type AppState = {
   toastMessage: string;
   isModal: boolean;
   isConfirmModal: boolean;
-  сonfirmModalId: {
-    name: string;
-    id: string;
-  };
+  сonfirmModalId: ConfirmModal;
 };
 
 export default AppState;

@@ -27,6 +27,7 @@ import ModalWindow from 'components/modal';
 
 import Constants from 'utils/Constants';
 import './App.css';
+import { fetchRemoveColumn } from 'redux/boardSlice';
 
 function App() {
   const { toastMessage, isPending, isConfirmModal, сonfirmModalId } = useAppSelector(
@@ -58,7 +59,7 @@ function App() {
 
   const handelConfirmRemove = () => {
     dispatch(requestData({ isPending: true }));
-    const { name, id } = сonfirmModalId;
+    const { name, id, boardId } = сonfirmModalId;
     switch (name) {
       case 'board':
         dispatch(fetchRemoveBoard({ token, id })).finally(() => {
@@ -79,6 +80,12 @@ function App() {
             dispatch(receiveData({ isPending: false }));
             dispatch(currentConfirmModalId({ name: '', id: '' }));
           });
+        break;
+      case 'column':
+        dispatch(fetchRemoveColumn({ token, _id: id, boardId })).finally(() => {
+          dispatch(receiveData({ isPending: false }));
+          dispatch(currentConfirmModalId({ name: '', id: '', boardId: '' }));
+        });
         break;
     }
     dispatch(closeConfirmModal());

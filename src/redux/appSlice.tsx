@@ -1,6 +1,6 @@
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import AppState from 'types/AppState';
+import AppState, { ConfirmModal } from 'types/AppState';
 import Constants from 'utils/Constants';
 
 const initialState: AppState = {
@@ -14,6 +14,7 @@ const initialState: AppState = {
   сonfirmModalId: {
     name: '',
     id: '',
+    boardId: '',
   },
 };
 const appSlice = createSlice({
@@ -53,7 +54,7 @@ const appSlice = createSlice({
     closeConfirmModal(state) {
       state.isConfirmModal = false;
     },
-    currentConfirmModalId(state, action: PayloadAction<{ name: string; id: string }>) {
+    currentConfirmModalId(state, action: PayloadAction<ConfirmModal>) {
       state.сonfirmModalId = action.payload;
     },
   },
