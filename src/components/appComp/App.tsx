@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-import Constants from 'utils/Constants';
-
+import { fetchRemoveBoard } from 'redux/mainSlice';
+import { deleteUser } from 'redux/userSlice';
 import { logoutUser } from 'redux/authSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { closeConfirmModal, currentConfirmModalId, receiveData, requestData } from 'redux/appSlice';
 import useCheckToken from 'hooks/useCheckToken';
+import useLogError from 'hooks/useLogError';
 
 import Toast from 'components/toast/Toast';
 import Header from 'components/header/Header';
@@ -16,17 +20,14 @@ import PrivateRoute from 'components/privateRoute/PrivateRoute';
 import WelcomePage from 'components/welcomPage';
 import EditProfile from 'components/edit/EditProfile';
 import NotFound from 'components/notFound/NotFound';
-import './App.css';
 import Footer from 'components/Footer';
 import Main from 'components/main';
 import Board from 'components/board';
 import ModalWindow from 'components/modal';
-import { useForm } from 'react-hook-form';
-import { closeConfirmModal, currentConfirmModalId, receiveData, requestData } from 'redux/appSlice';
-import { useTranslation } from 'react-i18next';
-import { fetchRemoveBoard } from 'redux/mainSlice';
-import { deleteUser } from 'redux/userSlice';
-import useLogError from 'hooks/useLogError';
+
+import Constants from 'utils/Constants';
+import './App.css';
+import { fetchRemoveColumn } from 'redux/boardSlice';
 
 function App() {
   const { toastMessage, isPending, isConfirmModal, сonfirmModalId } = useAppSelector(
@@ -44,10 +45,12 @@ function App() {
 
   // check if user is logged in already
   useEffect(() => {
-    checkToken().catch(() => {
-      dispatch(logoutUser());
-      if (location.pathname !== `/${Constants.PAGE.WELCOME}`) {
-        // navigate(`/${Constants.PAGE.NOT_FOUND}`);
+    checkToken().catch((e) => {
+      if (e.response.status === Constants.ERROR_STATUS.EXPIRED) {
+        dispatch(logoutUser());
+      }
+      if (location.pathname !== `/${Constants.PAGE.WELCOME}` && location.pathname !== '/') {
+        navigate(`/${Constants.PAGE.NOT_FOUND}`);
       } else {
         navigate(`/${Constants.PAGE.WELCOME}`);
       }
@@ -56,7 +59,7 @@ function App() {
 
   const handelConfirmRemove = () => {
     dispatch(requestData({ isPending: true }));
-    const { name, id } = сonfirmModalId;
+    const { name, id, boardId } = сonfirmModalId;
     switch (name) {
       case 'board':
         dispatch(fetchRemoveBoard({ token, id })).finally(() => {
@@ -78,6 +81,12 @@ function App() {
             dispatch(currentConfirmModalId({ name: '', id: '' }));
           });
         break;
+      case 'column':
+        dispatch(fetchRemoveColumn({ token, _id: id, boardId })).finally(() => {
+          dispatch(receiveData({ isPending: false }));
+          dispatch(currentConfirmModalId({ name: '', id: '', boardId: '' }));
+        });
+        break;
     }
     dispatch(closeConfirmModal());
   };
@@ -93,7 +102,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" />} />
         <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/404" element={<NotFound />} />
+        <Route
+          path="/404"
+          element={
+            <>
+              <Header type={Constants.PAGE.NOT_FOUND} />
+              <NotFound />
+            </>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route
@@ -116,7 +133,7 @@ function App() {
             <PrivateRoute
               element={
                 <>
-                  <Header type={Constants.PAGE.MAIN} />
+                  <Header type={Constants.PAGE.BOARD} />
                   <Board />
                   <Footer />
                 </>
@@ -124,7 +141,21 @@ function App() {
             ></PrivateRoute>
           }
         />
-        <Route path="/edit" element={<PrivateRoute element={<EditProfile />}></PrivateRoute>} />
+        <Route
+          path="/edit"
+          element={
+            <PrivateRoute
+              element={
+                <>
+                  <Header type={Constants.PAGE.EDIT} />
+                  <EditProfile />
+                  <Footer />
+                </>
+              }
+            ></PrivateRoute>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
       {toastMessage && <Toast />}

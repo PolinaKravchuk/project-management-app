@@ -7,10 +7,6 @@ export interface Board {
 }
 
 export interface MainState {
-  isModal: boolean;
-  isConfirmModal: boolean;
-  isPending: boolean;
-  currentBoardRemoveId: string;
   error: string;
   boards: Board[];
 }
@@ -22,4 +18,5 @@ export interface MainParams {
 export interface MainRemoveParams {
   token: string;
   id: string;
+  boardId?: string;
 }

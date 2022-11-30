@@ -1,6 +1,6 @@
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import AppState from 'types/AppState';
+import AppState, { ConfirmModal } from 'types/AppState';
 import Constants from 'utils/Constants';
 
 const initialState: AppState = {
@@ -9,10 +9,12 @@ const initialState: AppState = {
   toastLabel: '',
   toastColor: 'info',
   toastMessage: '',
+  isModal: false,
   isConfirmModal: false,
   сonfirmModalId: {
     name: '',
     id: '',
+    boardId: '',
   },
 };
 const appSlice = createSlice({
@@ -39,13 +41,20 @@ const appSlice = createSlice({
     changeLang: (state, action) => {
       state.isENLanguage = action.payload.lang;
     },
+    openModal(state) {
+      state.isModal = true;
+    },
+    closeModal(state) {
+      state.isModal = false;
+      state.isConfirmModal = false;
+    },
     openConfirmModal(state) {
       state.isConfirmModal = true;
     },
     closeConfirmModal(state) {
       state.isConfirmModal = false;
     },
-    currentConfirmModalId(state, action: PayloadAction<{ name: string; id: string }>) {
+    currentConfirmModalId(state, action: PayloadAction<ConfirmModal>) {
       state.сonfirmModalId = action.payload;
     },
   },
@@ -57,6 +66,8 @@ export const {
   registerErrorMessage,
   registerSuccessMessage,
   changeLang,
+  openModal,
+  closeModal,
   openConfirmModal,
   closeConfirmModal,
   currentConfirmModalId,

@@ -65,5 +65,16 @@
       "getBoard": "Failed to load boards!",
       "removeBoard": "Unable to delete board!"
     }
+  },
+  "board": {
+    "label": "Board",
+    "todo": "To Do",
+    "addColumn": "Add Column",
+    "addTask": "Add task",
+    "boardErrorMessage": {
+      "addColumn": "Failed to create column!",
+      "getColumn": "Failed to load column!",
+      "removeColumn": "Unable to delete column!"
+    }
   }
 }

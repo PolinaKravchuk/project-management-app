@@ -106,7 +106,7 @@
 .input-create-board-err-container .input-create-board {
   margin-bottom: 0;
 }
-.input-create-board{
+.input-create-board {
   height: 39px;
   font-style: italic;
   font-weight: 400;
@@ -149,5 +149,5 @@
   cursor: pointer;
 }
 .modal__button:active {
-  transform: scale(.9);
+  transform: scale(0.9);
 }

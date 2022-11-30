@@ -6,14 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import ModalWindow from 'components/modal';
 import { useForm } from 'react-hook-form';
-import { closeModal, fetchAddBoard, fetchGetBoards } from 'redux/mainSlice';
+import { fetchAddBoard, fetchGetBoards } from 'redux/mainSlice';
 import { ErrorMessage } from '@hookform/error-message';
 import { useTranslation } from 'react-i18next';
 import { BoardForm } from './types';
-import { currentConfirmModalId, openConfirmModal, receiveData, requestData } from 'redux/appSlice';
+import {
+  closeModal,
+  currentConfirmModalId,
+  openConfirmModal,
+  receiveData,
+  requestData,
+} from 'redux/appSlice';
 
 export default function Main() {
-  const { isModal, error, boards } = useAppSelector((state) => state.main);
+  const { isModal } = useAppSelector((state) => state.app);
+  const { error, boards } = useAppSelector((state) => state.main);
   const { id } = useAppSelector((state) => state.user);
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();

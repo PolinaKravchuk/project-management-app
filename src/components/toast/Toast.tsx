@@ -5,14 +5,12 @@ import { useAppSelector } from 'redux/hooks';
 import './Toast.css';
 
 const Toast = function () {
-  const label = useAppSelector((state) => state.app.toastLabel);
-  const color = useAppSelector((state) => state.app.toastColor);
-  const message = useAppSelector((state) => state.app.toastMessage);
+  const { toastLabel, toastColor, toastMessage } = useAppSelector((state) => state.app);
 
   return (
-    <Alert className="message-toast" severity={color}>
-      <AlertTitle>{label}</AlertTitle>
-      {message}
+    <Alert className="message-toast" severity={toastColor}>
+      <AlertTitle>{toastLabel}</AlertTitle>
+      {toastMessage}
     </Alert>
   );
 };

@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import appSlice from './appSlice';
 import authSlice from './authSlice';
+import boardSlice from './boardSlice';
 import mainSlice from './mainSlice';
 import userSlice from './userSlice';
 
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     user: userSlice.reducer,
     main: mainSlice,
+    board: boardSlice,
   },
 });
 export default store;

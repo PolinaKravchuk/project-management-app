@@ -1,12 +1,10 @@
 import React, { ReactNode } from 'react';
 import './ModalWindow.css';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { closeModal } from 'redux/mainSlice';
-import { closeConfirmModal } from 'redux/appSlice';
+import { closeConfirmModal, closeModal } from 'redux/appSlice';
 
 export default function ModalWindow({ children }: { children: ReactNode }) {
-  const { isConfirmModal } = useAppSelector((state) => state.app);
-  const { isModal } = useAppSelector((state) => state.main);
+  const { isModal, isConfirmModal } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
 
   const handleCloseModal = () => {
