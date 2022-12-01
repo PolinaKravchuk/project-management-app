@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { BoardState, Column, ColumnParams } from 'types/BoardState';
+import { BoardState, TColumn, ColumnParams } from 'types/BoardState';
 import Constants from 'utils/Constants';
 import { isError } from './mainSlice';
 
@@ -12,7 +12,11 @@ const initialState: BoardState = {
 const boardSlice = createSlice({
   name: 'boardDetails',
   initialState,
-  reducers: {},
+  reducers: {
+    updateColumns: (state, action) => {
+      state.columns = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAddColumn.pending, (state) => {
@@ -40,16 +44,10 @@ const boardSlice = createSlice({
   },
 });
 
+export const { updateColumns } = boardSlice.actions;
 export default boardSlice.reducer;
 
-export const fetchColumns = createAsyncThunk(
-  'boardDetails/fetchColumns',
-  async (boardId: string) => {
-    const res = await axios.get(`${Constants.APP_URL}boards/${boardId}`);
-  }
-);
-
-export const fetchAddColumn = createAsyncThunk<Column, ColumnParams, { rejectValue: string }>(
+export const fetchAddColumn = createAsyncThunk<TColumn, ColumnParams, { rejectValue: string }>(
   'addColumn/fetch',
   async (params, { rejectWithValue }) => {
     const response = await fetch(`${Constants.APP_URL}boards/${params._id}/columns`, {
@@ -65,13 +63,13 @@ export const fetchAddColumn = createAsyncThunk<Column, ColumnParams, { rejectVal
     if (!response.ok) {
       return rejectWithValue('board.boardErrorMessage.addColumn');
     }
-    const data: Column = await response.json();
+    const data: TColumn = await response.json();
 
     return data;
   }
 );
 export const fetchGetColumns = createAsyncThunk<
-  Column[],
+  TColumn[],
   { _id: string; token: string },
   { rejectValue: string }
 >('getColumn/fetch', async (params, { rejectWithValue }) => {
@@ -86,12 +84,12 @@ export const fetchGetColumns = createAsyncThunk<
   if (!response.ok) {
     return rejectWithValue('board.boardErrorMessage.getColumn');
   }
-  const data: Column[] = await response.json();
+  const data: TColumn[] = await response.json();
 
   return data;
 });
 
-export const fetchRemoveColumn = createAsyncThunk<Column, ColumnParams, { rejectValue: string }>(
+export const fetchRemoveColumn = createAsyncThunk<TColumn, ColumnParams, { rejectValue: string }>(
   'removeColumn/fetch',
   async (params, { rejectWithValue }) => {
     const response = await fetch(
@@ -109,7 +107,7 @@ export const fetchRemoveColumn = createAsyncThunk<Column, ColumnParams, { reject
     if (!response.ok) {
       return rejectWithValue('board.boardErrorMessage.removeColumn');
     }
-    const data: Column = await response.json();
+    const data: TColumn = await response.json();
 
     return data;
   }
