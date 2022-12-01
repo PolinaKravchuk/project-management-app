@@ -6,7 +6,7 @@ import Header from 'components/Header';
 import Form from 'components/Form';
 
 import Constants from 'utils/Constants';
-import { UserLogin } from 'types/UserData';
+import { UserLogin } from '../types';
 import '../Form.css';
 
 function Login() {

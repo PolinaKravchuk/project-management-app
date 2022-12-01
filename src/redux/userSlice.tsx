@@ -6,7 +6,6 @@ import { UserParams } from 'types/UserData';
 import Constants from 'utils/Constants';
 
 const initialState: UserState = {
-  inProgress: false,
   id: '',
   name: '',
   password: '',
