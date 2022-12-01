@@ -31,6 +31,9 @@ const boardSlice = createSlice({
     closeTaskModal(state) {
       state.isTaskModal = false;
     },
+    updateColumns: (state, action) => {
+      state.columns = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -80,16 +83,9 @@ const boardSlice = createSlice({
   },
 });
 
-export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal } =
+export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal, updateColumns } =
   boardSlice.actions;
 export default boardSlice.reducer;
-
-export const fetchColumns = createAsyncThunk(
-  'boardDetails/fetchColumns',
-  async (boardId: string) => {
-    const res = await axios.get(`${Constants.APP_URL}boards/${boardId}`);
-  }
-);
 
 export const fetchAddColumn = createAsyncThunk<IColumn, ColumnParams, { rejectValue: string }>(
   'addColumn/fetch',

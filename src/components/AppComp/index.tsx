@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { closeConfirmModal, currentConfirmModalId, receiveData, requestData } from 'redux/appSlice';
 import useCheckToken from 'hooks/useCheckToken';
 import useLogError from 'hooks/useLogError';
+import useLogSuccess from 'hooks/useLogSuccess';
 
 import Toast from 'components/Toast';
 import Header from 'components/Header';
@@ -28,7 +29,6 @@ import ModalWindow from 'components/Modal';
 
 import Constants from 'utils/Constants';
 import './App.css';
-import useLogSuccess from 'hooks/useLogSuccess';
 
 function App() {
   const { toastMessage, isPending, isConfirmModal, сonfirmModalId } = useAppSelector(
@@ -49,11 +49,9 @@ function App() {
     checkToken().catch((e) => {
       if (e.response.status === Constants.ERROR_STATUS.EXPIRED) {
         dispatch(logoutUser());
-      }
-      if (location.pathname !== `/${Constants.PAGE.WELCOME}` && location.pathname !== '/') {
-        navigate(`/${Constants.PAGE.NOT_FOUND}`);
-      } else {
         navigate(`/${Constants.PAGE.WELCOME}`);
+      } else {
+        navigate(`${location.pathname}`);
       }
     });
   }, []);

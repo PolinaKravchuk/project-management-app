@@ -2,18 +2,19 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-
 import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import common_ru from 'translations/ru/common.json';
 import common_en from 'translations/en/common.json';
 
 import { store } from './redux/store';
 import App from 'components/AppComp';
+import Constants from 'utils/Constants';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import Constants from 'utils/Constants';
 
 i18next.init({
   interpolation: { escapeValue: false },
@@ -36,7 +37,9 @@ root.render(
     <BrowserRouter>
       <Provider store={store}>
         <I18nextProvider i18n={i18next}>
-          <App />
+          <DndProvider backend={HTML5Backend}>
+            <App />
+          </DndProvider>
         </I18nextProvider>
       </Provider>
     </BrowserRouter>

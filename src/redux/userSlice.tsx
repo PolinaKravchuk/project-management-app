@@ -6,7 +6,6 @@ import { UserParams } from 'types/UserData';
 import Constants from 'utils/Constants';
 
 const initialState: UserState = {
-  inProgress: false,
   id: '',
   name: '',
   password: '',
@@ -24,13 +23,24 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(updateUser.fulfilled, (state, action) => {
-      state.name = action.payload.name;
-    });
+    builder
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.name = action.payload.name;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.name = action.payload.name;
+      });
   },
 });
 
 export default userSlice;
+
+export const getUser = createAsyncThunk('user/getUser', async (params: UserParams) => {
+  const res = await axios.get(`${Constants.APP_URL}users/${params.id}`, {
+    headers: getHeaders(params),
+  });
+  return res.data;
+});
 
 export const updateUser = createAsyncThunk('user/updateUser', async (params: UserParams) => {
   const payload = params.payload;

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { logoutUser } from 'redux/authSlice';
 import { changeLang, openModal } from 'redux/appSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 import logo from 'assets/img/small-logo.png';
 import HeaderType from 'types/HeaderType';
@@ -14,7 +14,7 @@ import './Header.css';
 
 function Header(props: HeaderType) {
   const { isENLanguage } = useAppSelector((state) => state.app);
-  const { isLogged } = useAppSelector((state) => state.auth);
+  const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   let className = 'header dark-bg-brand';
   className = props.type !== Constants.PAGE.WELCOME ? className + ' fixed' : className;
@@ -57,7 +57,7 @@ function Header(props: HeaderType) {
         <img className="header-logo" src={logo} alt="logo" />
       </Link>
       <nav className="header-nav">
-        {!isLogged && (
+        {!token && (
           <>
             <Link className="header-link light-txt-brand" to="/login">
               {t('header.signIn')}
@@ -67,12 +67,12 @@ function Header(props: HeaderType) {
             </Link>{' '}
           </>
         )}
-        {isLogged && props.type !== Constants.PAGE.MAIN && (
+        {token && props.type !== Constants.PAGE.MAIN && (
           <Link className="header-link light-txt-brand" to="/main">
             {t('header.main')}
           </Link>
         )}
-        {isLogged && props.type === Constants.PAGE.MAIN && (
+        {token && props.type === Constants.PAGE.MAIN && (
           <>
             <Link className="header-link light-txt-brand" to="/edit">
               {t('header.editProfile')}

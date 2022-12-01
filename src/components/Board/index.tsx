@@ -1,40 +1,74 @@
-import React from 'react';
+import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useParams } from 'react-router-dom';
 import { ErrorMessage } from '@hookform/error-message';
+import update from 'immutability-helper';
 
 import ModalWindow from 'components/Modal';
 import Column from 'components/Column';
-
 import { closeModal, openModal, receiveData, requestData } from 'redux/appSlice';
+import { getUser } from 'redux/userSlice';
 import {
   closeColumnModal,
   closeTaskModal,
   fetchAddColumn,
   fetchAddTask,
   openColumnModal,
+  updateColumns,
 } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+
+import { IColumn } from 'types/BoardState';
+import boardAvatar from 'assets/img/boardAvatar.png';
 import './Board.css';
 import { TaskBody } from 'types/BoardState';
 
 export default function Board() {
+  const { _id } = useParams();
   const [t] = useTranslation('common');
+  const dispatch = useAppDispatch();
   const { isModal } = useAppSelector((state) => state.app);
   const { token } = useAppSelector((state) => state.auth);
   const { id } = useAppSelector((state) => state.user);
+
+  const { boards } = useAppSelector((state) => state.main);
+  const { name } = useAppSelector((state) => state.user);
   const { columns, error, orderColumn, isColumnModal, isTaskModal, columnId, orderTask } =
     useAppSelector((state) => state.board);
-  const dispatch = useAppDispatch();
-  const { _id } = useParams();
 
+  const board = boards.find((board) => board._id === _id);
+  const [dndColumns, setDndColumns] = useState([] as IColumn[]);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<{ title: string; description?: string }>();
+
+  useEffect(() => {
+    setDndColumns(columns);
+  }, [columns]);
+
+  useEffect(() => {
+    if (board) {
+      dispatch(updateColumns([]));
+
+      dispatch(requestData());
+      dispatch(getUser({ id: board?.owner, token: token })).finally(() => dispatch(receiveData()));
+    }
+  }, [_id]);
+
+  const moveColumn = useCallback((dragIndex: number, hoverIndex: number) => {
+    setDndColumns((prevColumn: IColumn[]) =>
+      update(prevColumn, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevColumn[dragIndex] as IColumn],
+        ],
+      })
+    );
+  }, []);
 
   if (!token) {
     return <Navigate to="/welcome" />;
@@ -89,12 +123,33 @@ export default function Board() {
   return (
     <>
       <main className="board-wrapper light-bg-brand main-padding">
+        <div className="board-header">
+          <div className="board-header-avatar">
+            <img src={boardAvatar} alt="avatar" />
+          </div>
+          <div className="board-header-desc">
+            <div>
+              <h2>{board?.title} </h2>
+              <span className="board-id">{_id}</span>
+              <p></p>
+            </div>
+            <p>{board?.description}</p>
+            <p>
+              <strong>{t('board.createdBy')}</strong>
+              {name}
+            </p>
+          </div>
+        </div>
         {error && <h2 className="main_error">{t(error)}</h2>}
         <section className="board-body">
           {error
             ? null
-            : !!columns.length &&
-              columns.map((column) => <Column key={column._id} column={column} />)}
+            : !!dndColumns.length &&
+              dndColumns.map((column, index) => {
+                return (
+                  <Column key={column._id} column={column} index={index} moveColumn={moveColumn} />
+                );
+              })}
           <button className="board-body__addcard" onClick={handelAddColumn}>
             <span>+</span>
             {t('board.addColumn')}

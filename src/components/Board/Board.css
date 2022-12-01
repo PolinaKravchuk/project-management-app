@@ -81,3 +81,20 @@ body {
   font-size: 40px;
   margin-top: -25px;
 }
+.board-header {
+  width: 90%;
+  display: flex;
+  align-items: center;
+}
+.board-id {
+  font-size: 14px;
+}
+.board-header-avatar {
+  margin-right: 20px;
+}
+.board-header-avatar img {
+  width: 100px;
+}
+.board-header-desc {
+  text-align: left;
+}

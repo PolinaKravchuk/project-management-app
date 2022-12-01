@@ -1,5 +1,4 @@
 type UserState = {
-  inProgress: boolean;
   id: string;
   name: string;
   password: string;

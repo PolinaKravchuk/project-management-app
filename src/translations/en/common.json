@@ -75,6 +75,7 @@
     "todo": "To Do",
     "addColumn": "Add Column",
     "addTask": "Add task",
+    "createdBy": "Created by: ",
     "boardErrorMessage": {
       "addColumn": "Failed to create column!",
       "getColumn": "Failed to load column!",
