@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { logoutUser } from 'redux/authSlice';
 import { deleteUser } from 'redux/userSlice';
 import { fetchRemoveBoard } from 'redux/mainSlice';
-import { fetchRemoveColumn } from 'redux/boardSlice';
+import { fetchRemoveColumn, fetchRemoveTask } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { closeConfirmModal, currentConfirmModalId, receiveData, requestData } from 'redux/appSlice';
 import useCheckToken from 'hooks/useCheckToken';
@@ -60,7 +60,7 @@ function App() {
 
   const handelConfirmRemove = () => {
     dispatch(requestData());
-    const { name, id, boardId } = сonfirmModalId;
+    const { name, id, boardId, columnId } = сonfirmModalId;
     switch (name) {
       case 'board':
         dispatch(fetchRemoveBoard({ token, id })).finally(() => {
@@ -87,6 +87,12 @@ function App() {
         dispatch(fetchRemoveColumn({ token, _id: id, boardId })).finally(() => {
           dispatch(receiveData());
           dispatch(currentConfirmModalId({ name: '', id: '', boardId: '' }));
+        });
+        break;
+      case 'task':
+        dispatch(fetchRemoveTask({ token, _id: id, boardId, columnId })).finally(() => {
+          dispatch(receiveData());
+          dispatch(currentConfirmModalId({ name: '', id: '', boardId: '', columnId: '' }));
         });
         break;
     }

@@ -70,6 +70,7 @@
     }
   },
   "board": {
+    "modalCreateTitle": "New column",
     "label": "Board",
     "todo": "To Do",
     "addColumn": "Add Column",
@@ -79,5 +80,8 @@
       "getColumn": "Failed to load column!",
       "removeColumn": "Unable to delete column!"
     }
+  },
+  "task": {
+    "modalCreateTitle": "New task"
   }
 }

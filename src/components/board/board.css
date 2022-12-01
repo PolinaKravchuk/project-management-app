@@ -68,6 +68,14 @@ body {
   line-height: 1;
   cursor: pointer;
 }
+.board-body__addcard:hover {
+  transition: 2s;
+  box-shadow: 0 4px 10px 0 #ccc;
+  overflow: hidden;
+}
+.board-body__addcard:active {
+  transform: scale(0.9);
+}
 .board-body__addcard span {
   display: block;
   font-size: 40px;

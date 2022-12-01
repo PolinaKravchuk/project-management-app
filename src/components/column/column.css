@@ -86,3 +86,10 @@
 .board-body__column__headercorrect__settings a.check {
   margin-right: 12px;
 }
+.remove__img:hover {
+  transition: 1s;
+  box-shadow: 0 4px 10px 0 #ccc;
+}
+.remove__img:active {
+  transform: scale(0.9);
+}
