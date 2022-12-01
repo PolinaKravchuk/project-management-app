@@ -1,4 +1,4 @@
-export interface Column {
+export interface TColumn {
   _id: string;
   title: string;
   order: number;
@@ -7,7 +7,7 @@ export interface Column {
 export interface BoardState {
   error: string;
   order: number;
-  columns: Column[];
+  columns: TColumn[];
 }
 export interface ColumnParams {
   _id: string;

@@ -3,10 +3,10 @@ import { Navigate } from 'react-router-dom';
 import { useAppSelector } from 'redux/hooks';
 
 function PrivateRoute(props: { element: ReactElement }) {
-  const { isLogged } = useAppSelector((state) => state.auth);
+  const { token } = useAppSelector((state) => state.auth);
 
-  if (!isLogged) {
-    return <Navigate to="/" />;
+  if (!token) {
+    return <Navigate to="/welcome" />;
   }
 
   return props.element;

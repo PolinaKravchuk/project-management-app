@@ -4,7 +4,10 @@ const Constants = {
     SIGN_UP: 'auth/signup',
     SIGN_IN: 'auth/signin',
   },
-
+  DND_TYPE: {
+    BOARD: 'Board',
+    COLUMN: 'Column',
+  },
   ERROR_STATUS: {
     EXPIRED: '403',
     NOT_FOUND: '404',
