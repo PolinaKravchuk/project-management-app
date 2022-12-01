@@ -11,7 +11,7 @@ import { registerSuccessMessage, requestData } from 'redux/appSlice';
 import Header from 'components/Header';
 import Form from 'components/Form';
 
-import { UserRegistration } from 'types/UserData';
+import { UserRegistration } from '../types';
 import Constants from 'utils/Constants';
 import '../Form.css';
 

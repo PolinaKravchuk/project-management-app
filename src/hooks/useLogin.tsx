@@ -7,7 +7,7 @@ import { receiveData, requestData } from 'redux/appSlice';
 import { setCredentials } from 'redux/authSlice';
 
 import useLogError from './useLogError';
-import { UserLogin } from 'types/UserData';
+import { UserLogin } from 'components/Form/types';
 import Constants from 'utils/Constants';
 
 export default function useLogin() {
