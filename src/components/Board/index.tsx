@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 
 import ModalWindow from 'components/Modal';
 import Column from 'components/Column';
-import { closeModal, openModal, receiveData, requestData } from 'redux/appSlice';
 import { getUser } from 'redux/userSlice';
+import { closeModal, openModal, receiveData, requestData } from 'redux/appSlice';
 import {
   closeColumnModal,
   closeTaskModal,
@@ -19,25 +19,27 @@ import {
 } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
+import useCheckToken from 'hooks/useCheckToken';
 import { IColumn } from 'types/BoardState';
+import { TaskBody } from 'types/BoardState';
 import boardAvatar from 'assets/img/boardAvatar.png';
 import './Board.css';
-import { TaskBody } from 'types/BoardState';
 
 export default function Board() {
   const { _id } = useParams();
   const [t] = useTranslation('common');
+
   const dispatch = useAppDispatch();
   const { isModal } = useAppSelector((state) => state.app);
   const { token } = useAppSelector((state) => state.auth);
   const { id } = useAppSelector((state) => state.user);
-
   const { boards } = useAppSelector((state) => state.main);
   const { name } = useAppSelector((state) => state.user);
   const { columns, error, orderColumn, isColumnModal, isTaskModal, columnId, orderTask } =
     useAppSelector((state) => state.board);
 
   const board = boards.find((board) => board._id === _id);
+  const checkToken = useCheckToken(token);
   const [dndColumns, setDndColumns] = useState([] as IColumn[]);
   const {
     register,
@@ -45,6 +47,11 @@ export default function Board() {
     reset,
     formState: { errors },
   } = useForm<{ title: string; description?: string }>();
+
+  // check if user is logged in already
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   useEffect(() => {
     setDndColumns(columns);
