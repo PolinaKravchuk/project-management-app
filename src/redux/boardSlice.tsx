@@ -49,7 +49,7 @@ const boardSlice = createSlice({
         state.columns = [];
       })
       .addCase(fetchGetColumns.fulfilled, (state, action) => {
-        state.columns = action.payload;
+        state.columns = sortColumns(action.payload);
       })
       .addCase(fetchRemoveColumn.pending, (state) => {
         state.error = '';
@@ -83,6 +83,11 @@ const boardSlice = createSlice({
   },
 });
 
+function sortColumns(columns: IColumn[]) {
+  return columns.sort((a: IColumn, b: IColumn) => {
+    return a.order - b.order;
+  });
+}
 export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal, updateColumns } =
   boardSlice.actions;
 export default boardSlice.reducer;
@@ -102,6 +107,30 @@ export const fetchAddColumn = createAsyncThunk<IColumn, ColumnParams, { rejectVa
 
     if (!response.ok) {
       return rejectWithValue('board.boardErrorMessage.addColumn');
+    }
+    const data: IColumn = await response.json();
+
+    return data;
+  }
+);
+export const updateColumnOrder = createAsyncThunk<IColumn, ColumnParams, { rejectValue: string }>(
+  'updateColumnOrder/fetch',
+  async (params, { rejectWithValue }) => {
+    const response = await fetch(
+      `${Constants.APP_URL}boards/${params.boardId}/columns/${params._id}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params.columnBody),
+      }
+    );
+
+    if (!response.ok) {
+      return rejectWithValue('board.boardErrorMessage.updateOrder');
     }
     const data: IColumn = await response.json();
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState, SyntheticEvent } from 'react';
+import React, { useRef, useState, SyntheticEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrag, useDrop } from 'react-dnd';
 import type { Identifier, XYCoord } from 'dnd-core';
@@ -11,14 +11,15 @@ import { ColumnProps, IColumn, IDragItem } from './types';
 import './Column.css';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
-import { openTaskModal } from 'redux/boardSlice';
+import { openTaskModal, updateColumnOrder, updateColumns } from 'redux/boardSlice';
 
 export default function Column({ column, moveColumn, index }: ColumnProps) {
-  const { tasks } = useAppSelector((state) => state.board);
-  const dispatch = useAppDispatch();
   const [t] = useTranslation('common');
-  const [editMode, setEditMode] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const { token } = useAppSelector((state) => state.auth);
+  const { tasks, columns } = useAppSelector((state) => state.board);
+  const [editMode, setEditMode] = useState(false);
 
   const id = column._id;
   const tasksInColumn = tasks.filter((task) => task.columnId === column._id);
@@ -33,6 +34,46 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
     const { _id, boardId } = column;
     dispatch(openConfirmModal());
     dispatch(currentConfirmModalId({ name: 'column', id: _id, boardId }));
+  };
+
+  const [{ isDragging }, drag] = useDrag({
+    type: 'Column',
+    item: () => {
+      return { id, index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const updateColumnPositions = function (dragIndex: number, hoverIndex: number) {
+    const draggedCol = columns[dragIndex];
+    const draggedColBody = {
+      title: draggedCol.title,
+      order: hoverIndex,
+    };
+    dispatch(
+      updateColumnOrder({
+        _id: draggedCol._id,
+        token,
+        columnBody: draggedColBody,
+        boardId: draggedCol.boardId,
+      })
+    );
+
+    const hoveredCol = columns[hoverIndex];
+    const hoveredColBody = {
+      title: hoveredCol.title,
+      order: dragIndex,
+    };
+    dispatch(
+      updateColumnOrder({
+        _id: hoveredCol._id,
+        token,
+        columnBody: hoveredColBody,
+        boardId: hoveredCol.boardId,
+      })
+    );
   };
 
   const [{ handlerId }, drop] = useDrop<IDragItem, void, { handlerId: Identifier | null }>({
@@ -87,17 +128,9 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       item.index = hoverIndex;
-    },
-  });
 
-  const [{ isDragging }, drag] = useDrag({
-    type: 'Column',
-    item: () => {
-      return { id, index };
+      updateColumnPositions(dragIndex, hoverIndex);
     },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
   });
 
   const opacity = isDragging ? 0 : 1;

@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useParams } from 'react-router-dom';
@@ -67,14 +67,14 @@ export default function Board() {
   }, [_id]);
 
   const moveColumn = useCallback((dragIndex: number, hoverIndex: number) => {
-    setDndColumns((prevColumn: IColumn[]) =>
-      update(prevColumn, {
+    setDndColumns((prevColumn: IColumn[]) => {
+      return update(prevColumn, {
         $splice: [
           [dragIndex, 1],
           [hoverIndex, 0, prevColumn[dragIndex] as IColumn],
         ],
-      })
-    );
+      });
+    });
   }, []);
 
   if (!token) {

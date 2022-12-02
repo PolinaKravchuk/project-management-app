@@ -79,6 +79,7 @@
     "boardErrorMessage": {
       "addColumn": "Failed to create column!",
       "getColumn": "Failed to load column!",
+      "updateOrder": "Failed to update column order!",
       "removeColumn": "Unable to delete column!"
     }
   },
