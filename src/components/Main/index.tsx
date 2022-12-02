@@ -17,6 +17,7 @@ import {
   receiveData,
   requestData,
 } from 'redux/appSlice';
+import { fetchGetColumns, fetchGetTasks } from 'redux/boardSlice';
 
 export default function Main() {
   const { isModal } = useAppSelector((state) => state.app);
@@ -61,6 +62,11 @@ export default function Main() {
     const target = e.target as HTMLElement;
     if (target?.closest('.board') && !target?.classList.contains('board__delete-img')) {
       navigate(`/board/${id}`);
+      if (id) {
+        dispatch(requestData());
+        dispatch(fetchGetColumns({ _id: id, token })).finally(() => dispatch(receiveData()));
+        dispatch(fetchGetTasks({ _id: id, token })).finally(() => dispatch(receiveData()));
+      }
       return;
     }
 

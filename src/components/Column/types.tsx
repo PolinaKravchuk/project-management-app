@@ -1,8 +1,13 @@
-export interface IColumn {
-  column: { _id: string; title: string; order: number; boardId: string };
+export interface ColumnProps {
+  column: IColumn;
   index: number;
   moveColumn: (dragIndex: number, hoverIndex: number) => void;
-  onClick: (e: React.MouseEvent) => void;
+}
+export interface IColumn {
+  _id: string;
+  title: string;
+  order: number;
+  boardId: string;
 }
 
 export interface IDragItem {

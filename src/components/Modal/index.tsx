@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import './ModalWindow.css';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { closeConfirmModal, closeModal } from 'redux/appSlice';
+import { closeColumnModal, closeTaskModal } from 'redux/boardSlice';
 
 export default function ModalWindow({ children }: { children: ReactNode }) {
   const { isModal, isConfirmModal } = useAppSelector((state) => state.app);
@@ -10,6 +11,8 @@ export default function ModalWindow({ children }: { children: ReactNode }) {
   const handleCloseModal = () => {
     dispatch(closeModal());
     dispatch(closeConfirmModal());
+    dispatch(closeColumnModal());
+    dispatch(closeTaskModal());
   };
 
   return (

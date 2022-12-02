@@ -22,3 +22,14 @@
 .board-body__card__task__title {
   cursor: pointer;
 }
+.board-body__column__add-task button:hover,
+.board-body__card__task__remove :hover {
+  transition: 2s;
+  box-shadow: 0 4px 10px 0 #ccc;
+  overflow: hidden;
+}
+.board-body__column__add-task:active,
+.board-body__card__task__remove :active {
+  transition: 1s;
+  transform: scale(0.9);
+}

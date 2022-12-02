@@ -7,21 +7,22 @@ import update from 'immutability-helper';
 
 import ModalWindow from 'components/Modal';
 import Column from 'components/Column';
-import {
-  closeModal,
-  currentConfirmModalId,
-  openConfirmModal,
-  openModal,
-  receiveData,
-  requestData,
-} from 'redux/appSlice';
+import { closeModal, openModal, receiveData, requestData } from 'redux/appSlice';
 import { getUser } from 'redux/userSlice';
-import { fetchAddColumn, fetchGetColumns, updateColumns } from 'redux/boardSlice';
+import {
+  closeColumnModal,
+  closeTaskModal,
+  fetchAddColumn,
+  fetchAddTask,
+  openColumnModal,
+  updateColumns,
+} from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
-import { TColumn } from 'types/BoardState';
+import { IColumn } from 'types/BoardState';
 import boardAvatar from 'assets/img/boardAvatar.png';
 import './Board.css';
+import { TaskBody } from 'types/BoardState';
 
 export default function Board() {
   const { _id } = useParams();
@@ -29,25 +30,21 @@ export default function Board() {
   const dispatch = useAppDispatch();
   const { isModal } = useAppSelector((state) => state.app);
   const { token } = useAppSelector((state) => state.auth);
+  const { id } = useAppSelector((state) => state.user);
+
   const { boards } = useAppSelector((state) => state.main);
   const { name } = useAppSelector((state) => state.user);
-  const { columns, error, order } = useAppSelector((state) => state.board);
+  const { columns, error, orderColumn, isColumnModal, isTaskModal, columnId, orderTask } =
+    useAppSelector((state) => state.board);
 
   const board = boards.find((board) => board._id === _id);
-  const [dndColumns, setDndColumns] = useState([] as TColumn[]);
+  const [dndColumns, setDndColumns] = useState([] as IColumn[]);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<{ title: string }>();
-
-  useEffect(() => {
-    if (_id) {
-      dispatch(requestData());
-      dispatch(fetchGetColumns({ _id, token })).finally(() => dispatch(receiveData()));
-    }
-  }, [_id]); //if change board id -> trigger useEffect
+  } = useForm<{ title: string; description?: string }>();
 
   useEffect(() => {
     setDndColumns(columns);
@@ -63,11 +60,11 @@ export default function Board() {
   }, [_id]);
 
   const moveColumn = useCallback((dragIndex: number, hoverIndex: number) => {
-    setDndColumns((prevColumn: TColumn[]) =>
+    setDndColumns((prevColumn: IColumn[]) =>
       update(prevColumn, {
         $splice: [
           [dragIndex, 1],
-          [hoverIndex, 0, prevColumn[dragIndex] as TColumn],
+          [hoverIndex, 0, prevColumn[dragIndex] as IColumn],
         ],
       })
     );
@@ -77,14 +74,32 @@ export default function Board() {
     return <Navigate to="/welcome" />;
   }
 
-  const onSubmit = async (value: { title: string }) => {
-    const columnBody = {
-      title: value.title,
-      order,
-    };
-    if (_id) {
-      dispatch(requestData());
-      dispatch(fetchAddColumn({ _id, token, columnBody })).finally(() => dispatch(receiveData()));
+  const onSubmit = async (value: { title: string; description?: string }) => {
+    if (isColumnModal) {
+      const columnBody = {
+        title: value.title,
+        order: orderColumn,
+      };
+      if (_id) {
+        dispatch(requestData());
+        dispatch(fetchAddColumn({ _id, token, columnBody })).finally(() => dispatch(receiveData()));
+      }
+      dispatch(closeColumnModal());
+    } else if (isTaskModal) {
+      const taskBody: TaskBody = {
+        title: value.title,
+        order: orderTask,
+        description: value.description || '',
+        userId: id,
+        users: [],
+      };
+      if (_id) {
+        dispatch(requestData());
+        dispatch(fetchAddTask({ _id, token, columnId, taskBody })).finally(() =>
+          dispatch(receiveData())
+        );
+      }
+      dispatch(closeTaskModal());
     }
     dispatch(closeModal());
     reset();
@@ -92,21 +107,17 @@ export default function Board() {
 
   const handelAddColumn = () => {
     dispatch(openModal());
+    dispatch(openColumnModal());
   };
 
   const handleCloseModal = () => {
     dispatch(closeModal());
-    reset();
-  };
-
-  const handelRemoveColumn = (e: SyntheticEvent, id: string, boardId: string) => {
-    e.preventDefault();
-    const target = e.target as HTMLElement;
-    if (!target?.classList.contains('remove__img')) {
-      return;
+    if (isColumnModal) {
+      dispatch(closeColumnModal());
+    } else if (isTaskModal) {
+      dispatch(closeTaskModal());
     }
-    dispatch(openConfirmModal());
-    dispatch(currentConfirmModalId({ name: 'column', id, boardId }));
+    reset();
   };
 
   return (
@@ -136,13 +147,7 @@ export default function Board() {
             : !!dndColumns.length &&
               dndColumns.map((column, index) => {
                 return (
-                  <Column
-                    key={column._id}
-                    column={column}
-                    index={index}
-                    moveColumn={moveColumn}
-                    onClick={(e) => handelRemoveColumn(e, column._id, column.boardId)}
-                  />
+                  <Column key={column._id} column={column} index={index} moveColumn={moveColumn} />
                 );
               })}
           <button className="board-body__addcard" onClick={handelAddColumn}>
@@ -153,49 +158,118 @@ export default function Board() {
       </main>
       {isModal && (
         <ModalWindow>
-          <form
-            className="form light-bg-brand"
-            name="create-board"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h3 className="form-title">{t('main.modalCreateTitle')}</h3>
-            <div className="input-create-board-err-container">
-              <input
-                className="input-create-board"
-                type="text"
-                id="name"
-                {...register('title', {
-                  required: {
-                    value: true,
-                    message: t('form.errorMsg.required'),
-                  },
-                  minLength: {
-                    value: 3,
-                    message: t('form.errorMsg.minLength'),
-                  },
-                })}
-                placeholder={`${t('main.placeholderTitle')}`}
-              />
-              {errors.title && (
-                <span className="input-error-msg">
-                  <ErrorMessage errors={errors} name="title" />
-                </span>
-              )}
-            </div>
-            <div className="form-button-container">
-              <input
-                className="modal__button modal__button_active"
-                type="submit"
-                value={t<string>('form.submit')}
-              />
-              <input
-                className="modal__button"
-                type="button"
-                value={`${t('form.cancel')}`}
-                onClick={handleCloseModal}
-              />
-            </div>
-          </form>
+          {isColumnModal && (
+            <form
+              className="form light-bg-brand"
+              name="create-board"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <h3 className="form-title">{t('board.modalCreateTitle')}</h3>
+              <div className="input-create-board-err-container">
+                <input
+                  className="input-create-board"
+                  type="text"
+                  id="name"
+                  {...register('title', {
+                    required: {
+                      value: true,
+                      message: t('form.errorMsg.required'),
+                    },
+                    minLength: {
+                      value: 3,
+                      message: t('form.errorMsg.minLength'),
+                    },
+                  })}
+                  placeholder={`${t('main.placeholderTitle')}`}
+                />
+                {errors.title && (
+                  <span className="input-error-msg">
+                    <ErrorMessage errors={errors} name="title" />
+                  </span>
+                )}
+              </div>
+              <div className="form-button-container">
+                <input
+                  className="modal__button modal__button_active"
+                  type="submit"
+                  value={t<string>('form.submit')}
+                />
+                <input
+                  className="modal__button"
+                  type="button"
+                  value={`${t('form.cancel')}`}
+                  onClick={handleCloseModal}
+                />
+              </div>
+            </form>
+          )}
+          {isTaskModal && (
+            <form
+              className="form light-bg-brand"
+              name="create-board"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <h3 className="form-title">{t('task.modalCreateTitle')}</h3>
+              <div className="input-create-board-err-container">
+                <input
+                  className="input-create-board"
+                  type="text"
+                  id="name"
+                  {...register('title', {
+                    required: {
+                      value: true,
+                      message: t('form.errorMsg.required'),
+                    },
+                    minLength: {
+                      value: 3,
+                      message: t('form.errorMsg.minLength'),
+                    },
+                  })}
+                  placeholder={`${t('main.placeholderTitle')}`}
+                />
+                {errors.title && (
+                  <span className="input-error-msg">
+                    <ErrorMessage errors={errors} name="title" />
+                  </span>
+                )}
+              </div>
+              <div className="input-create-board-err-container">
+                <input
+                  className="input-create-board"
+                  id="descrip"
+                  {...register('description', {
+                    required: {
+                      value: true,
+                      message: t('form.errorMsg.required'),
+                    },
+                    minLength: {
+                      value: 3,
+                      message: t('form.errorMsg.minLength'),
+                    },
+                  })}
+                  placeholder={t<string>('main.placeholderDescription')}
+                />
+                {errors.description && (
+                  <span className="input-error-msg">
+                    <ErrorMessage errors={errors} name="description" />
+                  </span>
+                )}
+              </div>
+              <div className="form-button-container">
+                <input
+                  className="modal__button modal__button_active"
+                  type="submit"
+                  value={t<string>('form.submit')}
+                />
+                <input
+                  className="modal__button"
+                  type="button"
+                  value={`${t('form.cancel')}`}
+                  onClick={handleCloseModal}
+                />
+              </div>
+            </form>
+          )}
         </ModalWindow>
       )}
     </>

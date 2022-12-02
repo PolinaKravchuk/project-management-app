@@ -15,6 +15,7 @@ const initialState: AppState = {
     name: '',
     id: '',
     boardId: '',
+    columnId: '',
   },
 };
 const appSlice = createSlice({

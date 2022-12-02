@@ -4,6 +4,7 @@ export interface ConfirmModal {
   name: string;
   id: string;
   boardId?: string;
+  columnId?: string;
 }
 
 type AppState = {
