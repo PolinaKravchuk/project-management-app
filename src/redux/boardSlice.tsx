@@ -95,7 +95,7 @@ function sortItems(items: IColumn[] | TaskBody[]) {
   });
 }
 
-export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal, updateColumns } =
+export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal } =
   boardSlice.actions;
 export default boardSlice.reducer;
 
