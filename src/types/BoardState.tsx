@@ -38,3 +38,18 @@ export interface TaskParams {
   columnId?: string;
   taskId?: string;
 }
+
+export interface TaskBodyUpdate {
+  title: string;
+  order: number;
+  columnId: string;
+  description: string;
+  userId: number | string;
+  users: string[];
+}
+export interface TaskBodyUpdateParams {
+  _id: string;
+  token: string;
+  taskBody: TaskBodyUpdate;
+  boardId: string;
+}

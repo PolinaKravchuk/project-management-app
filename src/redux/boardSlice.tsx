@@ -1,6 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { BoardState, IColumn, ColumnParams, TaskParams, TaskBody } from 'types/BoardState';
+import { ITask } from 'components/Task/types';
+import {
+  BoardState,
+  IColumn,
+  ColumnParams,
+  TaskParams,
+  TaskBody,
+  TaskBodyUpdate,
+  TaskBodyUpdateParams,
+} from 'types/BoardState';
 import Constants from 'utils/Constants';
 import { isError } from './mainSlice';
 
@@ -31,9 +40,6 @@ const boardSlice = createSlice({
     closeTaskModal(state) {
       state.isTaskModal = false;
     },
-    updateColumns: (state, action) => {
-      state.columns = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,7 +55,7 @@ const boardSlice = createSlice({
         state.columns = [];
       })
       .addCase(fetchGetColumns.fulfilled, (state, action) => {
-        state.columns = sortColumns(action.payload);
+        state.columns = sortItems(action.payload) as IColumn[];
       })
       .addCase(fetchRemoveColumn.pending, (state) => {
         state.error = '';
@@ -69,7 +75,7 @@ const boardSlice = createSlice({
         state.tasks = [];
       })
       .addCase(fetchGetTasks.fulfilled, (state, action) => {
-        state.tasks = action.payload;
+        state.tasks = sortItems(action.payload) as TaskBody[];
       })
       .addCase(fetchRemoveTask.pending, (state) => {
         state.error = '';
@@ -83,11 +89,12 @@ const boardSlice = createSlice({
   },
 });
 
-function sortColumns(columns: IColumn[]) {
-  return columns.sort((a: IColumn, b: IColumn) => {
+function sortItems(items: IColumn[] | TaskBody[]) {
+  return items.sort((a: IColumn | TaskBody, b: IColumn | TaskBody) => {
     return a.order - b.order;
   });
 }
+
 export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal, updateColumns } =
   boardSlice.actions;
 export default boardSlice.reducer;
@@ -206,6 +213,33 @@ export const fetchAddTask = createAsyncThunk<TaskBody, TaskParams, { rejectValue
     return data;
   }
 );
+
+export const updateTaskOrder = createAsyncThunk<
+  TaskBodyUpdate,
+  TaskBodyUpdateParams,
+  { rejectValue: string }
+>('updateTaskOrder/fetch', async (params, { rejectWithValue }) => {
+  const task = params.taskBody;
+  const response = await fetch(
+    `${Constants.APP_URL}boards/${params.boardId}/columns/${task.columnId}/tasks/${params._id}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${params.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params.taskBody),
+    }
+  );
+
+  if (!response.ok) {
+    return rejectWithValue('board.boardErrorMessage.updateTask');
+  }
+  const data: TaskBodyUpdate = await response.json();
+
+  return data;
+});
 
 export const fetchGetTasks = createAsyncThunk<TaskBody[], TaskParams, { rejectValue: string }>(
   'getTasks/fetch',

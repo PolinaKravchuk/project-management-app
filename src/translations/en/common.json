@@ -81,6 +81,7 @@
       "addColumn": "Failed to create column!",
       "getColumn": "Failed to load column!",
       "updateOrder": "Failed to update column order!",
+      "updateTask": "Failed to update task order!",
       "removeColumn": "Unable to delete column!"
     }
   },

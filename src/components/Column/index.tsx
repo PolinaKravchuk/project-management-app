@@ -1,33 +1,42 @@
-import React, { useRef, useState, SyntheticEvent, useEffect } from 'react';
+import React, { useRef, useState, SyntheticEvent, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrag, useDrop } from 'react-dnd';
 import type { Identifier, XYCoord } from 'dnd-core';
+import update from 'immutability-helper';
+
+import { openTaskModal, updateColumnOrder } from 'redux/boardSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
+
 import Task from 'components/Task';
 
 import checkImg from 'assets/img/check.svg';
 import removeImg from 'assets/img/remove.svg';
 import closeImg from 'assets/img/close.svg';
+import { TaskBody } from 'types/BoardState';
 import { ColumnProps, IColumn, IDragItem } from './types';
 import './Column.css';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
-import { openTaskModal, updateColumnOrder, updateColumns } from 'redux/boardSlice';
 
 export default function Column({ column, moveColumn, index }: ColumnProps) {
   const [t] = useTranslation('common');
   const ref = useRef<HTMLDivElement>(null);
+  const [dndTasks, setDndTasks] = useState([] as TaskBody[]);
+  const [editMode, setEditMode] = useState(false);
+
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.auth);
   const { tasks, columns } = useAppSelector((state) => state.board);
-  const [editMode, setEditMode] = useState(false);
 
   const id = column._id;
-  const tasksInColumn = tasks.filter((task) => task.columnId === column._id);
 
   const handleAddTask = () => {
     dispatch(openTaskModal(column._id));
     dispatch(openModal());
   };
+
+  useEffect(() => {
+    setDndTasks(tasks);
+  }, [tasks]);
 
   const handelRemoveColumn = (e: SyntheticEvent, column: IColumn) => {
     e.preventDefault();
@@ -136,6 +145,17 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
+  const moveTask = useCallback((dragIndex: number, hoverIndex: number) => {
+    setDndTasks((prevTask: TaskBody[]) => {
+      return update(prevTask, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevTask[dragIndex] as TaskBody],
+        ],
+      });
+    });
+  }, []);
+
   return (
     <>
       <div ref={ref} style={{ opacity }} className="board-body__column">
@@ -166,7 +186,12 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
           </div>
         )}
 
-        {!!tasksInColumn.length && tasksInColumn.map((task) => <Task key={task._id} task={task} />)}
+        {!!dndTasks.length &&
+          dndTasks
+            .filter((task) => task.columnId === column._id)
+            .map((task, index) => (
+              <Task key={task._id} task={task} index={index} moveTask={moveTask} />
+            ))}
         <div className="board-body__column__add-task">
           <button onClick={handleAddTask}>
             <span>+</span>

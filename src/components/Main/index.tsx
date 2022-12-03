@@ -23,7 +23,7 @@ import { BoardForm } from './types';
 import './Main.css';
 
 export default function Main() {
-  const { id } = useAppSelector((state) => state.user);
+  const { id } = useAppSelector((state) => state.user) || localStorage.getItem('userId');
   const { token } = useAppSelector((state) => state.auth);
   const { isModal } = useAppSelector((state) => state.app);
   const { error, boards } = useAppSelector((state) => state.main);
@@ -74,6 +74,7 @@ export default function Main() {
       navigate(`/board/${id}`);
       if (id) {
         dispatch(requestData());
+
         dispatch(fetchGetColumns({ _id: id, token })).finally(() => dispatch(receiveData()));
         dispatch(fetchGetTasks({ _id: id, token })).finally(() => dispatch(receiveData()));
       }
