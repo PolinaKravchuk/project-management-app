@@ -19,14 +19,19 @@
   margin-bottom: 28px;
 }
 .board-body__column__header__title h2 {
+  width: 150px;
   margin: 0px;
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
   line-height: 19px;
+  text-align: start;
   color: #000000;
   text-transform: uppercase;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .board-body__column__header__settings a.remove {
   display: flex;
@@ -58,6 +63,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 22px;
+  column-gap: 6px
 }
 .board-body__column__headercorrect__input input {
   font-family: 'PFDinDisplayPro';

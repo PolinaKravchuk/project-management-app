@@ -1,4 +1,4 @@
-import React, { useRef, useState, SyntheticEvent, useEffect } from 'react';
+import React, { useRef, useState, SyntheticEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDrag, useDrop } from 'react-dnd';
 import type { Identifier, XYCoord } from 'dnd-core';
@@ -11,7 +11,7 @@ import { ColumnProps, IColumn, IDragItem } from './types';
 import './Column.css';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
-import { openTaskModal, updateColumnOrder, updateColumns } from 'redux/boardSlice';
+import { fetchUpdateColumnTitle, openTaskModal, updateColumnOrder } from 'redux/boardSlice';
 
 export default function Column({ column, moveColumn, index }: ColumnProps) {
   const [t] = useTranslation('common');
@@ -27,6 +27,28 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
   const handleAddTask = () => {
     dispatch(openTaskModal(column._id));
     dispatch(openModal());
+  };
+
+  let inputChangeTitleText = '';
+  const handleInputChangeTitle = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    inputChangeTitleText = target.value;
+  };
+
+  const handleSubmitChangeTitle = (e: SyntheticEvent, column: IColumn) => {
+    e.preventDefault();
+    const columnBody = {
+      title: inputChangeTitleText,
+      order: column.order,
+    };
+    dispatch(
+      fetchUpdateColumnTitle({ _id: column._id, token, columnBody, boardId: column.boardId })
+    );
+    setEditMode(false);
+  };
+  const handleCancelChangeTitle = (e: SyntheticEvent) => {
+    e.preventDefault();
+    setEditMode(false);
   };
 
   const handelRemoveColumn = (e: SyntheticEvent, column: IColumn) => {
@@ -140,31 +162,33 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
     <>
       <div ref={ref} style={{ opacity }} className="board-body__column">
         <div className="board-body__column__header">
-          <div className="board-body__column__header__title">
-            <h2>{column.title}</h2>
-          </div>
-          <div className="board-body__column__header__settings">
-            <a href="#" className="remove" onClick={(e) => handelRemoveColumn(e, column)}>
-              <img className="remove__img" src={removeImg} alt={'Remove'} />
-            </a>
-          </div>
+          {editMode ? (
+            <div className="board-body__column__headercorrect">
+              <div className="board-body__column__headercorrect__input">
+                <input type="text" onInput={(e) => handleInputChangeTitle(e)} placeholder="Done" />
+              </div>
+              <div className="board-body__column__headercorrect__settings">
+                <a href="#" className="check" onClick={(e) => handleSubmitChangeTitle(e, column)}>
+                  <img src={checkImg} alt="Check" />
+                </a>
+                <a href="#" className="close" onClick={(e) => handleCancelChangeTitle(e)}>
+                  <img src={closeImg} alt="Close" />
+                </a>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="board-body__column__header__title" onClick={() => setEditMode(true)}>
+                <h2>{column.title}</h2>
+              </div>
+              <div className="board-body__column__header__settings">
+                <a href="#" className="remove" onClick={(e) => handelRemoveColumn(e, column)}>
+                  <img className="remove__img" src={removeImg} alt={'Remove'} />
+                </a>
+              </div>
+            </>
+          )}
         </div>
-
-        {editMode && (
-          <div className="board-body__column__headercorrect">
-            <div className="board-body__column__headercorrect__input">
-              <input type="text" placeholder="Done" />
-            </div>
-            <div className="board-body__column__headercorrect__settings">
-              <a href="#" className="check">
-                <img src={checkImg} alt="Check" />
-              </a>
-              <a href="#" className="close">
-                <img src={closeImg} alt="Close" />
-              </a>
-            </div>
-          </div>
-        )}
 
         {!!tasksInColumn.length && tasksInColumn.map((task) => <Task key={task._id} task={task} />)}
         <div className="board-body__column__add-task">

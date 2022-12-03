@@ -51,6 +51,13 @@ const boardSlice = createSlice({
       .addCase(fetchGetColumns.fulfilled, (state, action) => {
         state.columns = sortColumns(action.payload);
       })
+      .addCase(fetchUpdateColumnTitle.pending, (state) => {
+        state.error = '';
+      })
+      .addCase(fetchUpdateColumnTitle.fulfilled, (state, action) => {
+        const columnIndex = state.columns.findIndex((column) => column._id === action.payload._id);
+        state.columns[columnIndex] = action.payload;
+      })
       .addCase(fetchRemoveColumn.pending, (state) => {
         state.error = '';
       })
@@ -137,6 +144,31 @@ export const updateColumnOrder = createAsyncThunk<IColumn, ColumnParams, { rejec
     return data;
   }
 );
+export const fetchUpdateColumnTitle = createAsyncThunk<
+  IColumn,
+  ColumnParams,
+  { rejectValue: string }
+>('updateColumnTitle/fetch', async (params, { rejectWithValue }) => {
+  const response = await fetch(
+    `${Constants.APP_URL}boards/${params.boardId}/columns/${params._id}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${params.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params.columnBody),
+    }
+  );
+
+  if (!response.ok) {
+    return rejectWithValue('board.boardErrorMessage.updateOrder');
+  }
+  const data: IColumn = await response.json();
+
+  return data;
+});
 export const fetchGetColumns = createAsyncThunk<
   IColumn[],
   { _id: string; token: string },
