@@ -9,8 +9,8 @@ const Constants = {
     COLUMN: 'Column',
   },
   ERROR_STATUS: {
-    EXPIRED: '403',
-    NOT_FOUND: '404',
+    EXPIRED: 403,
+    NOT_FOUND: 404,
   },
   PAGE: {
     WELCOME: 'welcome',

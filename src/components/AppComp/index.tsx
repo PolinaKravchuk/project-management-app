@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -34,26 +34,18 @@ function App() {
   const { toastMessage, isPending, isConfirmModal, сonfirmModalId } = useAppSelector(
     (state) => state.app
   );
+  const [t] = useTranslation('common');
   const { token } = useAppSelector((state) => state.auth) || localStorage.getItem('token');
   const { handleSubmit } = useForm();
-  const [t] = useTranslation('common');
   const logError = useLogError();
   const logSuccess = useLogSuccess();
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useAppDispatch();
   const checkToken = useCheckToken(token);
 
   // check if user is logged in already
   useEffect(() => {
-    checkToken().catch((e) => {
-      if (e.response.status === Constants.ERROR_STATUS.EXPIRED) {
-        dispatch(logoutUser());
-        navigate(`/${Constants.PAGE.WELCOME}`);
-      } else {
-        navigate(`${location.pathname}`);
-      }
-    });
+    checkToken();
   }, []);
 
   const handelConfirmRemove = () => {

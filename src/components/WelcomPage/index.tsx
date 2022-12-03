@@ -26,7 +26,6 @@ export default function WelcomePage() {
                 <p className="about-app__text">
                   <strong>{t('welcomePage.aboutUp.strong')}</strong>{' '}
                   {t('welcomePage.aboutUp.paragraph2')}
-                  divorse etc.
                 </p>
               </div>
               <img className="about-app__emblem" src={emblem} alt="emblem" />

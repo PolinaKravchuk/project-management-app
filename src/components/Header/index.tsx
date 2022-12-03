@@ -53,9 +53,16 @@ function Header(props: HeaderType) {
 
   return (
     <header id="header" className={className}>
-      <Link className="header-logo-link" to="/">
-        <img className="header-logo" src={logo} alt="logo" />
-      </Link>
+      <div className="header-logo-container">
+        <Link className="header-logo-link" to="/">
+          <img className="header-logo" src={logo} alt="logo" />
+        </Link>
+        {token && props.type !== Constants.PAGE.MAIN && (
+          <Link className="header-link header-link-back light-txt-brand" to="/main">
+            {t('header.back')}
+          </Link>
+        )}
+      </div>
       <nav className="header-nav">
         {!token && (
           <>
@@ -67,19 +74,15 @@ function Header(props: HeaderType) {
             </Link>{' '}
           </>
         )}
-        {token && props.type !== Constants.PAGE.MAIN && (
-          <Link className="header-link light-txt-brand" to="/main">
-            {t('header.main')}
-          </Link>
-        )}
-        {token && props.type === Constants.PAGE.MAIN && (
+
+        {token && props.type !== Constants.PAGE.WELCOME && (
           <>
             <Link className="header-link light-txt-brand" to="/edit">
               {t('header.editProfile')}
             </Link>
             <Link
               className="header-link light-txt-brand"
-              to="/"
+              to="/welcome"
               onClick={() => dispatch(logoutUser())}
             >
               {t('header.signOut')}

@@ -1,15 +1,13 @@
 import React, { SyntheticEvent, useEffect } from 'react';
-import './Main.css';
-import boardAvatar from 'assets/img/boardAvatar.png';
-import cartDelete from 'assets/img/cartDelete.png';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import ModalWindow from 'components/Modal';
 import { useForm } from 'react-hook-form';
-import { fetchAddBoard, fetchGetBoards } from 'redux/mainSlice';
-import { ErrorMessage } from '@hookform/error-message';
 import { useTranslation } from 'react-i18next';
-import { BoardForm } from './types';
+import { useNavigate } from 'react-router-dom';
+import { ErrorMessage } from '@hookform/error-message';
+
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { fetchAddBoard, fetchGetBoards } from 'redux/mainSlice';
+import { fetchGetColumns, fetchGetTasks } from 'redux/boardSlice';
+import useCheckToken from 'hooks/useCheckToken';
 import {
   closeModal,
   currentConfirmModalId,
@@ -17,14 +15,21 @@ import {
   receiveData,
   requestData,
 } from 'redux/appSlice';
-import { fetchGetColumns, fetchGetTasks } from 'redux/boardSlice';
+
+import boardAvatar from 'assets/img/boardAvatar.png';
+import cartDelete from 'assets/img/cartDelete.png';
+import ModalWindow from 'components/Modal';
+import { BoardForm } from './types';
+import './Main.css';
 
 export default function Main() {
-  const { isModal } = useAppSelector((state) => state.app);
-  const { error, boards } = useAppSelector((state) => state.main);
   const { id } = useAppSelector((state) => state.user);
   const { token } = useAppSelector((state) => state.auth);
+  const { isModal } = useAppSelector((state) => state.app);
+  const { error, boards } = useAppSelector((state) => state.main);
   const dispatch = useAppDispatch();
+
+  const checkToken = useCheckToken(token);
   const navigate = useNavigate();
   const [t] = useTranslation('common');
   const {
@@ -33,6 +38,11 @@ export default function Main() {
     reset,
     formState: { errors },
   } = useForm<BoardForm>();
+
+  // check if user is logged in already
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   useEffect(() => {
     dispatch(fetchGetBoards(token));
