@@ -53,7 +53,7 @@ export default function Main() {
 
     const boardBody = {
       title,
-      owner: id,
+      owner: id || localStorage.getItem('userId') || '',
       users: [],
     };
     dispatch(requestData());

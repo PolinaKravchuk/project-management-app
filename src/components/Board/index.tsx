@@ -32,7 +32,7 @@ export default function Board() {
   const dispatch = useAppDispatch();
   const { isModal } = useAppSelector((state) => state.app);
   const { token } = useAppSelector((state) => state.auth);
-  const { id } = useAppSelector((state) => state.user);
+  const { id } = useAppSelector((state) => state.user) || localStorage.getItem('userId') || '';
   const { boards } = useAppSelector((state) => state.main);
   const { name } = useAppSelector((state) => state.user);
   const { columns, error, orderColumn, isColumnModal, isTaskModal, columnId, orderTask } =
@@ -85,7 +85,7 @@ export default function Board() {
     if (isColumnModal) {
       const columnBody = {
         title: value.title,
-        order: orderColumn,
+        order: orderColumn[_id as string] || 0,
       };
       if (_id) {
         dispatch(requestData());

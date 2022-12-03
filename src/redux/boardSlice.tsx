@@ -9,7 +9,7 @@ const initialState: BoardState = {
   columnId: '',
   isTaskModal: false,
   error: '',
-  orderColumn: 0,
+  orderColumn: {},
   orderTask: 0,
   columns: [],
   tasks: [],
@@ -42,20 +42,37 @@ const boardSlice = createSlice({
       })
       .addCase(fetchAddColumn.fulfilled, (state, action) => {
         state.columns.push(action.payload);
-        state.orderColumn = action.payload.order + 1;
+        state.orderColumn[action.payload.boardId] = action.payload.order + 1;
       })
       .addCase(fetchGetColumns.pending, (state) => {
         state.error = '';
         state.columns = [];
       })
       .addCase(fetchGetColumns.fulfilled, (state, action) => {
-        state.columns = sortColumns(action.payload);
+        // state.columns = sortColumns(action.payload);
+        state.columns = action.payload;
+        if (action.payload.length) {
+          const sortColumns = [...action.payload].sort((a, b) => a.order - b.order);
+          const currentOrder = sortColumns[sortColumns.length - 1].order;
+          const currentBoardId = sortColumns[sortColumns.length - 1].boardId;
+          if (
+            !(
+              Object.keys(state.orderColumn).includes(currentBoardId) &&
+              state.orderColumn[currentBoardId] === currentOrder + 1
+            )
+          ) {
+            state.orderColumn[currentBoardId] = currentOrder + 1;
+          }
+        }
       })
       .addCase(fetchRemoveColumn.pending, (state) => {
         state.error = '';
       })
       .addCase(fetchRemoveColumn.fulfilled, (state, action) => {
         state.columns = state.columns.filter((column) => column._id !== action.payload._id);
+        if (state.columns.length < 1) {
+          delete state.orderColumn[action.payload.boardId];
+        }
       })
       .addCase(fetchAddTask.pending, (state) => {
         state.error = '';
