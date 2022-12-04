@@ -15,7 +15,6 @@ import {
   fetchAddColumn,
   fetchAddTask,
   openColumnModal,
-  updateColumns,
 } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
@@ -32,9 +31,8 @@ export default function Board() {
   const dispatch = useAppDispatch();
   const { isModal } = useAppSelector((state) => state.app);
   const { token } = useAppSelector((state) => state.auth);
-  const { id } = useAppSelector((state) => state.user);
+  const { id, name } = useAppSelector((state) => state.user);
   const { boards } = useAppSelector((state) => state.main);
-  const { name } = useAppSelector((state) => state.user);
   const { columns, error, orderColumn, isColumnModal, isTaskModal, columnId, orderTask } =
     useAppSelector((state) => state.board);
 
@@ -59,8 +57,6 @@ export default function Board() {
 
   useEffect(() => {
     if (board) {
-      dispatch(updateColumns([]));
-
       dispatch(requestData());
       dispatch(getUser({ id: board?.owner, token: token })).finally(() => dispatch(receiveData()));
     }
@@ -97,7 +93,7 @@ export default function Board() {
         title: value.title,
         order: orderTask,
         description: value.description || '',
-        userId: id,
+        userId: id || localStorage.getItem('userId') || '',
         users: [],
       };
       if (_id) {

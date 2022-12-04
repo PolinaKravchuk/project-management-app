@@ -57,7 +57,7 @@ function Header(props: HeaderType) {
         <Link className="header-logo-link" to="/">
           <img className="header-logo" src={logo} alt="logo" />
         </Link>
-        {token && props.type !== Constants.PAGE.MAIN && (
+        {token && props.type !== Constants.PAGE.MAIN && props.type !== Constants.PAGE.WELCOME && (
           <Link className="header-link header-link-back light-txt-brand" to="/main">
             {t('header.back')}
           </Link>
@@ -73,6 +73,12 @@ function Header(props: HeaderType) {
               {t('header.signUp')}
             </Link>{' '}
           </>
+        )}
+
+        {token && props.type === Constants.PAGE.WELCOME && (
+          <Link className="header-link header-link-back light-txt-brand" to="/main">
+            {t('header.main')}
+          </Link>
         )}
 
         {token && props.type !== Constants.PAGE.WELCOME && (
