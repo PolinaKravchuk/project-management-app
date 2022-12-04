@@ -40,12 +40,14 @@ export interface TaskParams {
 }
 
 export interface TaskBodyUpdate {
+  _id?: string;
   title: string;
   order: number;
   columnId: string;
   description: string;
   userId: number | string;
   users: string[];
+  boardId?: string;
 }
 export interface TaskBodyUpdateParams {
   _id: string;

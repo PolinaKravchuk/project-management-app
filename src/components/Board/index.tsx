@@ -93,7 +93,7 @@ export default function Board() {
         title: value.title,
         order: orderTask,
         description: value.description || '',
-        userId: id,
+        userId: id || localStorage.getItem('userId') || '',
         users: [],
       };
       if (_id) {

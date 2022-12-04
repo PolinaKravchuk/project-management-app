@@ -7,6 +7,7 @@ const Constants = {
   DND_TYPE: {
     BOARD: 'Board',
     COLUMN: 'Column',
+    TASK: 'Task',
   },
   ERROR_STATUS: {
     EXPIRED: 403,

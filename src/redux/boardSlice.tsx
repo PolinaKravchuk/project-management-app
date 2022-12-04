@@ -50,6 +50,12 @@ const boardSlice = createSlice({
         state.columns.push(action.payload);
         state.orderColumn = action.payload.order + 1;
       })
+      .addCase(updateColumnOrder.fulfilled, (state, action) => {
+        state.columns
+          .filter((column) => column._id === action.payload._id)
+          .forEach((column) => (column.order = action.payload.order));
+        sortItems(state.columns);
+      })
       .addCase(fetchGetColumns.pending, (state) => {
         state.error = '';
         state.columns = [];
@@ -69,6 +75,12 @@ const boardSlice = createSlice({
       .addCase(fetchAddTask.fulfilled, (state, action) => {
         state.tasks.push(action.payload);
         state.orderTask = action.payload.order + 1;
+      })
+      .addCase(updateTaskOrder.fulfilled, (state, action) => {
+        state.tasks
+          .filter((task) => task._id === action.payload._id)
+          .forEach((task) => (task.order = action.payload.order));
+        sortItems(state.tasks);
       })
       .addCase(fetchGetTasks.pending, (state) => {
         state.error = '';
