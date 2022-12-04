@@ -1,28 +1,32 @@
-import React, { useRef, useState, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDrag, useDrop } from 'react-dnd';
-import type { Identifier, XYCoord } from 'dnd-core';
+import update from 'immutability-helper';
+
+import { fetchUpdateColumnTitle, openTaskModal } from 'redux/boardSlice';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
+
 import Task from 'components/Task';
 
 import checkImg from 'assets/img/check.svg';
 import removeImg from 'assets/img/remove.svg';
 import closeImg from 'assets/img/close.svg';
-import { ColumnProps, IColumn, IDragItem } from './types';
+import { TaskBody } from 'types/BoardState';
+import { ColumnProps, IColumn } from './types';
 import './Column.css';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
-import { fetchUpdateColumnTitle, openTaskModal, updateColumnOrder } from 'redux/boardSlice';
+import useDnDItems from 'hooks/useDnDItems';
+import Constants from 'utils/Constants';
 
 export default function Column({ column, moveColumn, index }: ColumnProps) {
   const [t] = useTranslation('common');
-  const ref = useRef<HTMLDivElement>(null);
-  const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.auth);
-  const { tasks, columns } = useAppSelector((state) => state.board);
+  const [dndTasks, setDndTasks] = useState([] as TaskBody[]);
   const [editMode, setEditMode] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const { token } = useAppSelector((state) => state.auth);
+  const { tasks } = useAppSelector((state) => state.board);
+
   const id = column._id;
-  const tasksInColumn = tasks.filter((task) => task.columnId === column._id);
 
   const handleAddTask = () => {
     dispatch(openTaskModal(column._id));
@@ -50,6 +54,10 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
     e.preventDefault();
     setEditMode(false);
   };
+  useEffect(() => {
+    const dnd = tasks.filter((task) => task.columnId === column._id);
+    setDndTasks(dnd);
+  }, [tasks]);
 
   const handelRemoveColumn = (e: SyntheticEvent, column: IColumn) => {
     e.preventDefault();
@@ -57,106 +65,26 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
     dispatch(openConfirmModal());
     dispatch(currentConfirmModalId({ name: 'column', id: _id, boardId }));
   };
+  const ref = useRef<HTMLDivElement>(null);
 
-  const [{ isDragging }, drag] = useDrag({
-    type: 'Column',
-    item: () => {
-      return { id, index };
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
+  const dndConfig = useDnDItems(Constants.DND_TYPE.COLUMN, ref, {
+    id,
+    index,
+    order: column.order,
+    move: moveColumn,
   });
+  const opacity = dndConfig.isDragging ? 0 : 1;
 
-  const updateColumnPositions = function (dragIndex: number, hoverIndex: number) {
-    const draggedCol = columns[dragIndex];
-    const draggedColBody = {
-      title: draggedCol.title,
-      order: hoverIndex,
-    };
-    dispatch(
-      updateColumnOrder({
-        _id: draggedCol._id,
-        token,
-        columnBody: draggedColBody,
-        boardId: draggedCol.boardId,
-      })
-    );
-
-    const hoveredCol = columns[hoverIndex];
-    const hoveredColBody = {
-      title: hoveredCol.title,
-      order: dragIndex,
-    };
-    dispatch(
-      updateColumnOrder({
-        _id: hoveredCol._id,
-        token,
-        columnBody: hoveredColBody,
-        boardId: hoveredCol.boardId,
+  const moveTask = (dragIndex: number, hoverIndex: number) => {
+    setDndTasks(
+      update(dndTasks, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dndTasks[dragIndex] as TaskBody],
+        ],
       })
     );
   };
-
-  const [{ handlerId }, drop] = useDrop<IDragItem, void, { handlerId: Identifier | null }>({
-    accept: 'Column',
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
-    hover(item: IDragItem, monitor) {
-      if (!ref.current) {
-        return;
-      }
-      const dragIndex = item.index;
-      const hoverIndex = index;
-
-      // Don't replace items with themselves
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
-      // Get vertical middle
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset();
-
-      // Get pixels to the top
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-      moveColumn(dragIndex, hoverIndex);
-      // Time to actually perform the action
-
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex;
-
-      updateColumnPositions(dragIndex, hoverIndex);
-    },
-  });
-
-  const opacity = isDragging ? 0 : 1;
-  drag(drop(ref));
 
   return (
     <>
@@ -190,7 +118,11 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
           )}
         </div>
 
-        {!!tasksInColumn.length && tasksInColumn.map((task) => <Task key={task._id} task={task} />)}
+        {!!dndTasks.length &&
+          dndTasks.map((task, index) => (
+            <Task key={task._id} task={task} index={index} moveTask={moveTask} />
+          ))}
+
         <div className="board-body__column__add-task">
           <button onClick={handleAddTask}>
             <span>+</span>

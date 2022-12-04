@@ -53,7 +53,7 @@ export default function Main() {
 
     const boardBody = {
       title,
-      owner: id,
+      owner: id || localStorage.getItem('userId') || '',
       users: [],
     };
     dispatch(requestData());
@@ -74,6 +74,7 @@ export default function Main() {
       navigate(`/board/${id}`);
       if (id) {
         dispatch(requestData());
+
         dispatch(fetchGetColumns({ _id: id, token })).finally(() => dispatch(receiveData()));
         dispatch(fetchGetTasks({ _id: id, token })).finally(() => dispatch(receiveData()));
       }

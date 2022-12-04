@@ -1,12 +1,30 @@
-import React, { SyntheticEvent } from 'react';
-import removeImg from 'assets/img/remove.svg';
-import './Task.css';
-import { TaskBody } from 'types/BoardState';
+import React, { SyntheticEvent, useRef } from 'react';
+
 import { useAppDispatch } from 'redux/hooks';
 import { currentConfirmModalId, openConfirmModal } from 'redux/appSlice';
 
-export default function Task({ task }: { task: TaskBody }) {
+import useDnDItems from 'hooks/useDnDItems';
+import { TaskProps } from './types';
+import { TaskBody } from 'types/BoardState';
+import removeImg from 'assets/img/remove.svg';
+import './Task.css';
+import Constants from 'utils/Constants';
+
+export default function Task({ task, index, moveTask }: TaskProps) {
   const dispatch = useAppDispatch();
+  const ref = useRef<HTMLDivElement>(null);
+  const dndConfig = useDnDItems(
+    Constants.DND_TYPE.TASK,
+    ref,
+    {
+      id: task._id || '',
+      index,
+      order: task.order,
+      move: moveTask,
+    },
+    task.columnId
+  );
+  const opacity = dndConfig.isDragging ? 0 : 1;
 
   const handlrRemoveTask = (e: SyntheticEvent, task: TaskBody) => {
     e.preventDefault();
@@ -21,7 +39,7 @@ export default function Task({ task }: { task: TaskBody }) {
 
   return (
     <>
-      <div className="board-body__card__task">
+      <div className="board-body__card__task" ref={ref} style={{ opacity }}>
         <div className="board-body__card__task__title">{task.title}</div>
         <div className="board-body__card__task__remove">
           <a href="#" onClick={(e) => handlrRemoveTask(e, task)}>
