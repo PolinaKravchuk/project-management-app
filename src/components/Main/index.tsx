@@ -86,7 +86,7 @@ export default function Main() {
   };
   return (
     <>
-      <main className="main page light-bg-brand main-padding">
+      <main className="main page light-bg-brand">
         {error ? (
           <h2 className="main_error">{t(error)}</h2>
         ) : (

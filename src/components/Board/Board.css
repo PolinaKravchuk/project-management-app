@@ -31,14 +31,18 @@ body {
 .board-wrapper {
   background: #f0ebce;
   width: 100%;
+  height: calc(100vh - 320px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 120px;
+}
+.board-wrapper + footer {
+  height: 200px;
 }
 .board-body {
   width: 100%;
   height: 420px;
-  margin: 30px 0px;
   background: rgba(57, 81, 68, 0.6);
   border-radius: 10px;
   overflow-x: scroll;
@@ -83,8 +87,10 @@ body {
 }
 .board-header {
   width: 90%;
+  height: 120px;
   display: flex;
   align-items: center;
+  margin-top: 12px;
 }
 .board-id {
   font-size: 14px;
@@ -96,5 +102,12 @@ body {
   width: 100px;
 }
 .board-header-desc {
+  height: 120px;
   text-align: left;
+}
+.board-header-desc h3 {
+  margin: 0;
+}
+.board-header-desc p {
+  margin: 12px 0;
 }

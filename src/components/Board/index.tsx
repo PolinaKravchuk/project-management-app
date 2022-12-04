@@ -125,16 +125,15 @@ export default function Board() {
 
   return (
     <>
-      <main className="board-wrapper light-bg-brand main-padding">
-        <div className="board-header">
+      <main className="board-wrapper light-bg-brand ">
+        <section className="board-header">
           <div className="board-header-avatar">
             <img src={boardAvatar} alt="avatar" />
           </div>
           <div className="board-header-desc">
             <div>
-              <h2>{board?.title} </h2>
+              <h3>{board?.title}</h3>
               <span className="board-id">{_id}</span>
-              <p></p>
             </div>
             <p>{board?.description}</p>
             <p>
@@ -142,7 +141,7 @@ export default function Board() {
               {name}
             </p>
           </div>
-        </div>
+        </section>
         {error && <h2 className="main_error">{t(error)}</h2>}
         <section className="board-body">
           {error
