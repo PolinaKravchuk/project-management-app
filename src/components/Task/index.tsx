@@ -30,6 +30,10 @@ export default function Task({ task, index, moveTask }: TaskProps) {
   const opacity = dndConfig.isDragging ? 0 : 1;
 
   const handleChangeTask = (e: SyntheticEvent, task: TaskBody) => {
+    const target = e.target as HTMLImageElement;
+    if (target.classList.contains('remove-task')) {
+      return;
+    }
     const { _id, columnId, boardId } = task;
     dispatch(openModal());
     dispatch(openAboutTaskModal(task));
@@ -56,7 +60,7 @@ export default function Task({ task, index, moveTask }: TaskProps) {
         <div className="board-body__card__task__title">{task.title}</div>
         <div className="board-body__card__task__remove">
           <a href="#" onClick={(e) => handleRemoveTask(e, task)}>
-            <img src={removeImg} alt={'Remove'} />
+            <img className="remove-task" src={removeImg} alt={'Remove'} />
           </a>
         </div>
       </div>
