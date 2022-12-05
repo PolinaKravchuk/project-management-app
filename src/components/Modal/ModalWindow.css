@@ -1,0 +1,27 @@
+.overlay {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+}
+.overlay_active {
+  display: flex;
+  cursor: pointer;
+}
+.modal-window {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px -0px #0008;
+  cursor: auto;
+}
+.modal__content {
+  padding: 5px 20px;
+  border-radius: 12px;
+}

@@ -1,0 +1,93 @@
+{
+  "header": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "main": "Go To Main Page",
+    "back": "Back",
+    "editProfile": "Edit profile",
+    "signOut": "Sign Out",
+    "newBoard": "Create new board"
+  },
+  "toast": {
+    "errorLabel": "Error",
+    "successLabel": "Success"
+  },
+  "form": {
+    "name": "Name",
+    "login": "Login",
+    "password": "Password",
+    "successMsg": {
+      "accountCreated": "Account was created successfully"
+    },
+    "errorMsg": {
+      "required": "Field is mandatory",
+      "minLength": "Field should has more then 3 characters",
+      "maxNameLength": "Field should has less then 20 characters",
+      "maxLoginPassLength": "Field should has less then 15 characters"
+    },
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "delete": "Delete"
+  },
+  "edit": {
+    "title": "Edit Profile",
+    "updateSuccess": "User updated successfully",
+    "removeSuccess": "User removed successfully",
+    "resetChages": "Changes are reset"
+  },
+  "notFound": {
+    "title": "404 - Not Found",
+    "content": "Sorry, we don't know this page. Try again!"
+  },
+  "welcomePage": {
+    "aboutUp": {
+      "aboutTitle": "Project Management App",
+      "paragraph1": "Don’t panic if you have a lot of things to do.",
+      "strong": "Managerka",
+      "paragraph2": "helps you to deal with all problems you have, exept divorse etc."
+    },
+    "aboutTeam": {
+      "aboutTitle": "About team",
+      "polina": "Team Lead, Frontend developer",
+      "nikolay": "Frontend developer",
+      "andrei": "Frontend developer"
+    },
+    "aboutCourse": {
+      "aboutTitle": "RS School",
+      "paragraph1": "RS School is free-of-charge and community-based education program conducted by The Rolling Scopes developer community since 2013. Everyone can study at RS School, regardless of age, professional employment, or place of residence. Thementors and trainers of our school are front-end and javascript developers from different companies and countries. You can learn more about the course by clicking on the logo below."
+    }
+  },
+  "main": {
+    "modalCreateTitle": "New board",
+    "placeholderTitle": "Title",
+    "placeholderInvaiteUsers": "Invaite users",
+    "placeholderDescription": "Description",
+    "modalConfirm": "Are you sure you want to delete",
+    "mainErrorMessage": {
+      "addBoard": "Failed to create board!",
+      "getBoard": "Failed to load boards!",
+      "removeBoard": "Unable to delete board!"
+    }
+  },
+  "board": {
+    "modalCreateTitle": "New column",
+    "label": "Board",
+    "todo": "To Do",
+    "addColumn": "Add Column",
+    "addTask": "Add task",
+    "createdBy": "Created by: ",
+    "boardErrorMessage": {
+      "addColumn": "Failed to create column!",
+      "getColumn": "Failed to load column!",
+      "updateOrder": "Failed to update column order!",
+      "updateTask": "Failed to update task order!",
+      "removeColumn": "Unable to delete column!"
+    }
+  },
+  "task": {
+    "modalCreateTitle": "New task",
+    "infoAboutTask": "About Task" 
+  },
+  "change": "Change"
+}
