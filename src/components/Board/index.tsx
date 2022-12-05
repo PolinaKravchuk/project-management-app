@@ -81,7 +81,7 @@ export default function Board() {
     if (isColumnModal) {
       const columnBody = {
         title: value.title,
-        order: orderColumn,
+        order: orderColumn[_id as string] || 0,
       };
       if (_id) {
         dispatch(requestData());

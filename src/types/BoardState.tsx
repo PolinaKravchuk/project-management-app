@@ -4,12 +4,15 @@ export interface IColumn {
   order: number;
   boardId: string;
 }
+export interface OrderColumn {
+  [index: string]: number;
+}
 export interface BoardState {
   isColumnModal: boolean;
   columnId: string;
   isTaskModal: boolean;
   error: string;
-  orderColumn: number;
+  orderColumn: OrderColumn;
   orderTask: number;
   columns: IColumn[];
   tasks: TaskBody[];

@@ -1,14 +1,15 @@
 import avatar from 'assets/img/avatar.png';
+import polinaImg from 'assets/img/polinaImg.jpg';
 import { useTranslation } from 'react-i18next';
 import { Developer } from './types';
 
 export default function useDevelopersTranslate() {
-  const [t, i18n] = useTranslation('common');
+  const [t] = useTranslation('common');
 
   const developers: Developer[] = [
     {
       name: 'polinakravchuk',
-      img: avatar,
+      img: polinaImg,
       link: 'https://github.com/polinakravchuk',
       text: t('welcomePage.aboutTeam.polina'),
     },
