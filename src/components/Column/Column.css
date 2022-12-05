@@ -99,3 +99,10 @@
 .remove__img:active {
   transform: scale(0.9);
 }
+.board-column-wrapper {
+  overflow-y: auto;
+  height: calc(100% - 30px);
+}
+.board-column-wrapper::-webkit-scrollbar {
+  width: 5px;
+}
