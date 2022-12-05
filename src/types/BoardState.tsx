@@ -11,11 +11,13 @@ export interface BoardState {
   isColumnModal: boolean;
   columnId: string;
   isTaskModal: boolean;
+  isAboutTaskModal: boolean;
   error: string;
   orderColumn: OrderColumn;
   orderTask: number;
   columns: IColumn[];
   tasks: TaskBody[];
+  task: TaskBody;
 }
 export interface ColumnParams {
   _id: string;

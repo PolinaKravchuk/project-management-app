@@ -115,3 +115,27 @@ body {
 .board-header-desc p {
   margin: 12px 0;
 }
+.textarea-change-task-err-container {
+  display: flex;
+  height: 147px;
+  flex-direction: column;
+  margin-bottom: 6px;
+}
+.textarea-change-task-label {
+  font-size: 20px;
+}
+.textarea-change-task {
+  height: 100px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #000000;
+  background: rgba(57, 81, 68, 0.5);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+  resize: none;
+}
+
