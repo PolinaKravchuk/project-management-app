@@ -86,6 +86,8 @@
     }
   },
   "task": {
-    "modalCreateTitle": "Новая задача"
-  }
+    "modalCreateTitle": "Новая задача",
+    "infoAboutTask": "О задаче"
+  },
+  "change": "Изменить"
 }
