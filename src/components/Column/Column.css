@@ -63,7 +63,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 22px;
-  column-gap: 6px
+  column-gap: 6px;
 }
 .board-body__column__headercorrect__input input {
   font-family: 'PFDinDisplayPro';
