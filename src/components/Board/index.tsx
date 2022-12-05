@@ -75,8 +75,10 @@ export default function Board() {
   }, [columns]);
 
   useEffect(() => {
-    setInitialData();
-  }, [task]);
+    if (task._id && isAboutTaskModal) {
+      setInitialData();
+    }
+  }, [isAboutTaskModal]);
 
   function setInitialData() {
     setValue('title', task.title);
