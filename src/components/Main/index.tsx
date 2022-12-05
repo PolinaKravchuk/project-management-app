@@ -29,7 +29,7 @@ export default function Main() {
   const { error, boards } = useAppSelector((state) => state.main);
   const dispatch = useAppDispatch();
 
-  const checkToken = useCheckToken(token);
+  const checkToken = useCheckToken();
   const navigate = useNavigate();
   const [t] = useTranslation('common');
   const {

@@ -37,7 +37,7 @@ export default function Board() {
     useAppSelector((state) => state.board);
 
   const board = boards.find((board) => board._id === _id);
-  const checkToken = useCheckToken(token);
+  const checkToken = useCheckToken();
   const [dndColumns, setDndColumns] = useState([] as IColumn[]);
   const {
     register,

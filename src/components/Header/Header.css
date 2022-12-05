@@ -44,6 +44,7 @@
   line-height: 80px;
 }
 .header .header-link {
+  font-size: 26px;
   font-weight: normal;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -66,7 +67,7 @@
 
 @media screen and (max-width: 900px) {
   .header .header-link {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 @media screen and (max-width: 700px) {

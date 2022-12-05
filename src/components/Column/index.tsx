@@ -2,6 +2,7 @@ import React, { useState, SyntheticEvent, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import update from 'immutability-helper';
 
+import useDnDItems from 'hooks/useDnDItems';
 import { fetchUpdateColumnTitle, openTaskModal } from 'redux/boardSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { currentConfirmModalId, openConfirmModal, openModal } from 'redux/appSlice';
@@ -13,9 +14,8 @@ import removeImg from 'assets/img/remove.svg';
 import closeImg from 'assets/img/close.svg';
 import { TaskBody } from 'types/BoardState';
 import { ColumnProps, IColumn } from './types';
-import './Column.css';
-import useDnDItems from 'hooks/useDnDItems';
 import Constants from 'utils/Constants';
+import './Column.css';
 
 export default function Column({ column, moveColumn, index }: ColumnProps) {
   const [t] = useTranslation('common');
@@ -118,16 +118,18 @@ export default function Column({ column, moveColumn, index }: ColumnProps) {
           )}
         </div>
 
-        {!!dndTasks.length &&
-          dndTasks.map((task, index) => (
-            <Task key={task._id} task={task} index={index} moveTask={moveTask} />
-          ))}
+        <div className="board-column-wrapper">
+          {!!dndTasks.length &&
+            dndTasks.map((task, index) => (
+              <Task key={task._id} task={task} index={index} moveTask={moveTask} />
+            ))}
 
-        <div className="board-body__column__add-task">
-          <button onClick={handleAddTask}>
-            <span>+</span>
-            {t('board.addTask')}
-          </button>
+          <div className="board-body__column__add-task">
+            <button onClick={handleAddTask}>
+              <span>+</span>
+              {t('board.addTask')}
+            </button>
+          </div>
         </div>
       </div>
     </>

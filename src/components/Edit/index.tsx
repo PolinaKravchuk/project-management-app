@@ -6,9 +6,9 @@ import { Button, TextField } from '@mui/material';
 
 import Toast from 'components/Toast';
 
-import { updateLogin } from 'redux/authSlice';
+import { updateLogin, updatePassword } from 'redux/authSlice';
 import { currentConfirmModalId, openConfirmModal, receiveData, requestData } from 'redux/appSlice';
-import { setUserData, updateUser } from 'redux/userSlice';
+import { getUser, setUserData, updateUser } from 'redux/userSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 import useLogSuccess from 'hooks/useLogSuccess';
@@ -32,6 +32,26 @@ function EditProfile() {
     setValue,
     formState: { isDirty, errors },
   } = useForm();
+
+  useEffect(() => {
+    if (!id) {
+      dispatch(requestData());
+      dispatch(
+        getUser({
+          id: id || localStorage.getItem('userId') || '',
+          token: token || localStorage.getItem('token') || '',
+        })
+      )
+        .then((data) => {
+          dispatch(updateLogin(data.payload));
+          dispatch(setUserData(data.payload));
+          dispatch(updatePassword());
+        })
+        .finally(() => {
+          dispatch(receiveData());
+        });
+    }
+  }, []);
 
   useEffect(() => {
     setInitialData();

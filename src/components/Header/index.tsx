@@ -93,10 +93,12 @@ function Header(props: HeaderType) {
             >
               {t('header.signOut')}
             </Link>
-            <Link className="header-link light-txt-brand" to="/main" onClick={handleCreateBoard}>
-              {t('header.newBoard')}
-            </Link>
           </>
+        )}
+        {token && props.type === Constants.PAGE.MAIN && (
+          <Link className="header-link light-txt-brand" to="/main" onClick={handleCreateBoard}>
+            {t('header.newBoard')}
+          </Link>
         )}
         <FormControlLabel
           control={<Switch checked={isENLanguage} onChange={handleChange} />}

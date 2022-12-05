@@ -41,7 +41,7 @@ function App() {
   const logSuccess = useLogSuccess();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const checkToken = useCheckToken(token);
+  const checkToken = useCheckToken();
 
   // check if user is logged in already
   useEffect(() => {

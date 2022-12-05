@@ -20,6 +20,7 @@ const userSlice = createSlice({
       localStorage.setItem('userId', action.payload.id);
     },
     setUserData: (state, action) => {
+      state.id = action.payload._id;
       state.name = action.payload.name;
     },
   },
