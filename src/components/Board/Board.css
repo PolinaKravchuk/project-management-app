@@ -45,11 +45,14 @@ body {
   height: calc(100vh - 320px);
   background: rgba(57, 81, 68, 0.6);
   border-radius: 10px;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   font-family: PFDinDisplayPro;
   display: flex;
   align-items: center;
+}
+.board-body::-webkit-scrollbar {
+  height: 10px;
 }
 .board-body__addcard {
   height: 345px;

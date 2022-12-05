@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import Constants from 'utils/Constants';
 import { useTranslation } from 'react-i18next';
 import useDevelopersTranslate from './aboutTeamData';
+import gitHubIcon from 'assets/img/gitHubIcon.png';
 
 export default function WelcomePage() {
   const [t] = useTranslation('common');
@@ -38,16 +39,22 @@ export default function WelcomePage() {
               <ul className="about-team__list">
                 {developers.map((developer: Developer) => (
                   <li key={developer.name} className="about-team__item">
-                    <img className="about-team__avatar" src={developer.img} alt="avatar" />
-                    <h3 className="about-team__name">
-                      <a
-                        className="about-team__link"
-                        href={developer.link}
-                        rel="noopener noreferrer"
-                      >
-                        {developer.name}
-                      </a>
-                    </h3>
+                    <div className="about-team__avatar-wrapper">
+                      <img className="about-team__avatar" src={developer.img} alt="avatar" />
+                    </div>
+                    <div className="about-team_github">
+                      <img className="about-team_github-icon" src={gitHubIcon} alt="gitHub icon" />
+                      <h3 className="about-team__name">
+                        <a
+                          className="about-team__link"
+                          href={developer.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {developer.name}
+                        </a>
+                      </h3>
+                    </div>
                     <p className="about-team2__text">{developer.text}</p>
                   </li>
                 ))}

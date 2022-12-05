@@ -17,7 +17,7 @@ const initialState: BoardState = {
   isTaskModal: false,
   isAboutTaskModal: false,
   error: '',
-  orderColumn: 0,
+  orderColumn: {},
   orderTask: 0,
   columns: [],
   tasks: [],
@@ -64,7 +64,7 @@ const boardSlice = createSlice({
       })
       .addCase(fetchAddColumn.fulfilled, (state, action) => {
         state.columns.push(action.payload);
-        state.orderColumn = action.payload.order + 1;
+        state.orderColumn[action.payload.boardId] = action.payload.order + 1;
       })
       .addCase(updateColumnOrder.fulfilled, (state, action) => {
         state.columns
@@ -77,7 +77,20 @@ const boardSlice = createSlice({
         state.columns = [];
       })
       .addCase(fetchGetColumns.fulfilled, (state, action) => {
-        state.columns = sortItems(action.payload) as IColumn[];
+        const sortColumns = sortItems(action.payload) as IColumn[];
+        state.columns = sortColumns;
+        if (sortColumns.length) {
+          const currentOrder = sortColumns[sortColumns.length - 1].order;
+          const currentBoardId = sortColumns[sortColumns.length - 1].boardId;
+          if (
+            !(
+              Object.keys(state.orderColumn).includes(currentBoardId) &&
+              state.orderColumn[currentBoardId] === currentOrder + 1
+            )
+          ) {
+            state.orderColumn[currentBoardId] = currentOrder + 1;
+          }
+        }
       })
       .addCase(fetchUpdateColumnTitle.pending, (state) => {
         state.error = '';
@@ -91,6 +104,9 @@ const boardSlice = createSlice({
       })
       .addCase(fetchRemoveColumn.fulfilled, (state, action) => {
         state.columns = state.columns.filter((column) => column._id !== action.payload._id);
+        if (state.columns.length < 1) {
+          delete state.orderColumn[action.payload.boardId];
+        }
       })
       .addCase(fetchAddTask.pending, (state) => {
         state.error = '';
