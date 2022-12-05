@@ -15,11 +15,22 @@ const initialState: BoardState = {
   isColumnModal: false,
   columnId: '',
   isTaskModal: false,
+  isAboutTaskModal: false,
   error: '',
   orderColumn: 0,
   orderTask: 0,
   columns: [],
   tasks: [],
+  task: {
+    _id: '',
+    title: '',
+    order: 0,
+    boardId: '',
+    columnId: '',
+    description: '',
+    userId: '',
+    users: [],
+  },
 };
 const boardSlice = createSlice({
   name: 'boardDetails',
@@ -37,6 +48,13 @@ const boardSlice = createSlice({
     },
     closeTaskModal(state) {
       state.isTaskModal = false;
+    },
+    openAboutTaskModal(state, action: PayloadAction<TaskBody>) {
+      state.isAboutTaskModal = true;
+      state.task = action.payload;
+    },
+    closeAboutTaskModal(state) {
+      state.isAboutTaskModal = false;
     },
   },
   extraReducers: (builder) => {
@@ -100,6 +118,13 @@ const boardSlice = createSlice({
       .addCase(fetchRemoveTask.fulfilled, (state, action) => {
         state.tasks = state.tasks.filter((task) => task._id !== action.payload._id);
       })
+      .addCase(fetchUpdateTask.pending, (state) => {
+        state.error = '';
+      })
+      .addCase(fetchUpdateTask.fulfilled, (state, action) => {
+        const taskIndex = state.tasks.findIndex((task) => task._id === action.payload._id);
+        state.tasks[taskIndex] = action.payload;
+      })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       });
@@ -112,8 +137,14 @@ function sortItems(items: IColumn[] | TaskBody[]) {
   });
 }
 
-export const { openColumnModal, closeColumnModal, openTaskModal, closeTaskModal } =
-  boardSlice.actions;
+export const {
+  openColumnModal,
+  closeColumnModal,
+  openTaskModal,
+  closeTaskModal,
+  openAboutTaskModal,
+  closeAboutTaskModal,
+} = boardSlice.actions;
 export default boardSlice.reducer;
 
 export const fetchAddColumn = createAsyncThunk<IColumn, ColumnParams, { rejectValue: string }>(
@@ -320,6 +351,30 @@ export const fetchRemoveTask = createAsyncThunk<TaskBody, TaskParams, { rejectVa
 
     if (!response.ok) {
       return rejectWithValue('task.taskErrorMessage.removeTask');
+    }
+    const data: TaskBody = await response.json();
+
+    return data;
+  }
+);
+export const fetchUpdateTask = createAsyncThunk<TaskBody, TaskParams, { rejectValue: string }>(
+  'updateTask/fetch',
+  async (params, { rejectWithValue }) => {
+    const response = await fetch(
+      `${Constants.APP_URL}boards/${params.boardId}/columns/${params.columnId}/tasks/${params._id}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params.taskBody),
+      }
+    );
+
+    if (!response.ok) {
+      return rejectWithValue('board.boardErrorMessage.updateOrder');
     }
     const data: TaskBody = await response.json();
 

@@ -117,7 +117,7 @@ export default function Main() {
         )}
       </main>
       {isModal && (
-        <ModalWindow>
+        <ModalWindow reset={reset}>
           <form
             className="form light-bg-brand"
             name="create-board"

@@ -1,6 +1,5 @@
 import React from 'react';
 import './WelcomPage.css';
-import { Link } from 'react-router-dom';
 import emblem from 'assets/img/page-logo.png';
 import rsSchool from 'assets/img/rsSchool.png';
 import Footer from 'components/Footer';
@@ -41,9 +40,13 @@ export default function WelcomePage() {
                   <li key={developer.name} className="about-team__item">
                     <img className="about-team__avatar" src={developer.img} alt="avatar" />
                     <h3 className="about-team__name">
-                      <Link className="about-team__link" to={developer.link}>
+                      <a
+                        className="about-team__link"
+                        href={developer.link}
+                        rel="noopener noreferrer"
+                      >
                         {developer.name}
-                      </Link>
+                      </a>
                     </h3>
                     <p className="about-team2__text">{developer.text}</p>
                   </li>
@@ -56,9 +59,14 @@ export default function WelcomePage() {
           <div className="about-course-container">
             <h2 className="section-title">{t('welcomePage.aboutCourse.aboutTitle')}</h2>
             <p className="about-course__text">{t('welcomePage.aboutCourse.paragraph1')}</p>
-            <Link className="rs__link" to="https://rs.school/react/" target="_blank">
+            <a
+              className="rs__link"
+              href="https://rs.school/react/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img className="rss__img" src={rsSchool} alt="RS School Logo" />
-            </Link>
+            </a>
           </div>
         </section>
       </main>
