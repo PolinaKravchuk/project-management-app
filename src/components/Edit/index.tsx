@@ -6,7 +6,7 @@ import { Button, TextField } from '@mui/material';
 
 import Toast from 'components/Toast';
 
-import { updateLogin } from 'redux/authSlice';
+import { updateLogin, updatePassword } from 'redux/authSlice';
 import { currentConfirmModalId, openConfirmModal, receiveData, requestData } from 'redux/appSlice';
 import { getUser, setUserData, updateUser } from 'redux/userSlice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
@@ -45,6 +45,7 @@ function EditProfile() {
         .then((data) => {
           dispatch(updateLogin(data.payload));
           dispatch(setUserData(data.payload));
+          dispatch(updatePassword());
         })
         .finally(() => {
           dispatch(receiveData());

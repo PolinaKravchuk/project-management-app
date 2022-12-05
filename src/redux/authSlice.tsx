@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import AuthState from 'types/AuthState';
+import secureLocalStorage from 'react-secure-storage';
 
 const initialState: AuthState = {
   token: localStorage.getItem('token') || '',
@@ -16,9 +17,13 @@ const authSlice = createSlice({
       state.password = action.payload.password;
 
       localStorage.setItem('token', action.payload.token);
+      secureLocalStorage.setItem('userPassword', action.payload.password);
     },
     updateLogin: (state, action) => {
       state.login = action.payload.login;
+    },
+    updatePassword: (state) => {
+      state.password = secureLocalStorage.getItem('userPassword') as string;
     },
     logoutUser: (state) => {
       state.token = '';
@@ -31,5 +36,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, updateLogin, logoutUser } = authSlice.actions;
+export const { setCredentials, updateLogin, updatePassword, logoutUser } = authSlice.actions;
 export default authSlice;
